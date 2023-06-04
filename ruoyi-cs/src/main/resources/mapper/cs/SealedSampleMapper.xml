@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.cs.mapper.SealedSampleMapper">
+    
+    <resultMap type="SealedSample" id="SealedSampleResult">
+        <result property="id"    column="id"    />
+        <result property="sealedSample"    column="sealed_sample"    />
+        <result property="eightD"    column="eight_d"    />
+        <result property="sampleLocation"    column="sample_location"    />
+        <result property="supplier"    column="supplier"    />
+        <result property="supplyHouse"    column="supply_house"    />
+        <result property="business"    column="business"    />
+        <result property="drawingTime"    column="drawing_time"    />
+        <result property="sealedSampleTime"    column="sealed_sample_time"    />
+        <result property="sampleIndate"    column="sample_indate"    />
+        <result property="sealedSampleDue"    column="sealed_sample_due"    />
+        <result property="remainingTime"    column="remaining_time"    />
+        <result property="recheckTime"    column="recheck_time"    />
+        <result property="notes"    column="notes"    />
+        <result property="images"    column="images"    />
+    </resultMap>
+
+    <sql id="selectSealedSampleVo">
+        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images from sealed_sample
+    </sql>
+
+    <select id="selectSealedSampleList" parameterType="SealedSample" resultMap="SealedSampleResult">
+        <include refid="selectSealedSampleVo"/>
+        <where>  
+            <if test="sealedSample != null  and sealedSample != ''"> and sealed_sample like concat('%', #{sealedSample}, '%')</if>
+            <if test="eightD != null  and eightD != ''"> and eight_d like concat('%', #{eightD}, '%')</if>
+            <if test="sampleLocation != null  and sampleLocation != ''"> and sample_location like concat('%', #{sampleLocation}, '%')</if>
+            <if test="supplier != null  and supplier != ''"> and supplier like concat('%', #{supplier}, '%')</if>
+            <if test="supplyHouse != null  and supplyHouse != ''"> and supply_house like concat('%', #{supplyHouse}, '%')</if>
+            <if test="business != null  and business != ''"> and business like concat('%', #{business}, '%')</if>
+            <if test="drawingTime != null "> and drawing_time = #{drawingTime}</if>
+            <if test="sealedSampleTime != null "> and sealed_sample_time = #{sealedSampleTime}</if>
+            <if test="sampleIndate != null  and sampleIndate != ''"> and sample_indate = #{sampleIndate}</if>
+            <if test="sealedSampleDue != null "> and sealed_sample_due = #{sealedSampleDue}</if>
+            <if test="remainingTime != null  and remainingTime != ''"> and remaining_time = #{remainingTime}</if>
+            <if test="recheckTime != null "> and recheck_time = #{recheckTime}</if>
+            <if test="notes != null  and notes != ''"> and notes = #{notes}</if>
+            <if test="images != null  and images != ''"> and images = #{images}</if>
+        </where>
+    </select>
+    
+    <select id="selectSealedSampleById" parameterType="Long" resultMap="SealedSampleResult">
+        <include refid="selectSealedSampleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSealedSample" parameterType="SealedSample" useGeneratedKeys="true" keyProperty="id">
+        insert into sealed_sample
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sealedSample != null and sealedSample != ''">sealed_sample,</if>
+            <if test="eightD != null and eightD != ''">eight_d,</if>
+            <if test="sampleLocation != null and sampleLocation != ''">sample_location,</if>
+            <if test="supplier != null">supplier,</if>
+            <if test="supplyHouse != null">supply_house,</if>
+            <if test="business != null">business,</if>
+            <if test="drawingTime != null">drawing_time,</if>
+            <if test="sealedSampleTime != null">sealed_sample_time,</if>
+            <if test="sampleIndate != null">sample_indate,</if>
+            <if test="sealedSampleDue != null">sealed_sample_due,</if>
+            <if test="remainingTime != null">remaining_time,</if>
+            <if test="recheckTime != null">recheck_time,</if>
+            <if test="notes != null">notes,</if>
+            <if test="images != null">images,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sealedSample != null and sealedSample != ''">#{sealedSample},</if>
+            <if test="eightD != null and eightD != ''">#{eightD},</if>
+            <if test="sampleLocation != null and sampleLocation != ''">#{sampleLocation},</if>
+            <if test="supplier != null">#{supplier},</if>
+            <if test="supplyHouse != null">#{supplyHouse},</if>
+            <if test="business != null">#{business},</if>
+            <if test="drawingTime != null">#{drawingTime},</if>
+            <if test="sealedSampleTime != null">#{sealedSampleTime},</if>
+            <if test="sampleIndate != null">#{sampleIndate},</if>
+            <if test="sealedSampleDue != null">#{sealedSampleDue},</if>
+            <if test="remainingTime != null">#{remainingTime},</if>
+            <if test="recheckTime != null">#{recheckTime},</if>
+            <if test="notes != null">#{notes},</if>
+            <if test="images != null">#{images},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSealedSample" parameterType="SealedSample">
+        update sealed_sample
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sealedSample != null and sealedSample != ''">sealed_sample = #{sealedSample},</if>
+            <if test="eightD != null and eightD != ''">eight_d = #{eightD},</if>
+            <if test="sampleLocation != null and sampleLocation != ''">sample_location = #{sampleLocation},</if>
+            <if test="supplier != null">supplier = #{supplier},</if>
+            <if test="supplyHouse != null">supply_house = #{supplyHouse},</if>
+            <if test="business != null">business = #{business},</if>
+            <if test="drawingTime != null">drawing_time = #{drawingTime},</if>
+            <if test="sealedSampleTime != null">sealed_sample_time = #{sealedSampleTime},</if>
+            <if test="sampleIndate != null">sample_indate = #{sampleIndate},</if>
+            <if test="sealedSampleDue != null">sealed_sample_due = #{sealedSampleDue},</if>
+            <if test="remainingTime != null">remaining_time = #{remainingTime},</if>
+            <if test="recheckTime != null">recheck_time = #{recheckTime},</if>
+            <if test="notes != null">notes = #{notes},</if>
+            <if test="images != null">images = #{images},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSealedSampleById" parameterType="Long">
+        delete from sealed_sample where id = #{id}
+    </delete>
+
+    <delete id="deleteSealedSampleByIds" parameterType="String">
+        delete from sealed_sample where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

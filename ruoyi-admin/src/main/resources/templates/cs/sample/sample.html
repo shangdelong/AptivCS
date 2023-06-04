@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('封样件的管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>物料名称：</label>
+                                <input type="text" name="sealedSample" autocomplete="off"/>
+                            </li>
+                            <li>
+                                <label>8D号：</label>
+                                <input type="text" name="eightD" autocomplete="off"/>
+                            </li>
+                            <li>
+                                <label>样件位置：</label>
+                                <input type="text" name="sampleLocation" autocomplete="off"/>
+                            </li>
+                            <li>
+                                <label>供应商：</label>
+                                <input type="text" name="supplier" autocomplete="off"/>
+                            </li>
+                            <li>
+                                <label>供应商号：</label>
+                                <input type="text" name="supplyHouse" autocomplete="off"/>
+                            </li>
+<!--                            <li>-->
+<!--                                <label>图纸日期：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择图纸日期" name="drawingTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>封样日期：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择封样日期" name="sealedSampleTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>样件到期日期：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择样件到期日期" name="sealedSampleDue"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>到今日还有：</label>-->
+<!--                                <input type="text" name="remainingTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>实际复检日期：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择实际复检日期" name="recheckTime"/>-->
+<!--                            </li>-->
+<!--                            <li class="select-time">-->
+<!--                                <label style="width: 100px">样件到期区间：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="开始时间"/>-->
+<!--                                <span>-</span>-->
+<!--                                <input type="text" class="time-input" placeholder="结束时间"/>-->
+<!--                            </li>-->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="cs:sample:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="cs:sample:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cs:sample:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="system:user:import">
+                    <i class="fa fa-download"></i> 导入
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cs:sample:export">
+                    <i class="fa fa-upload"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('cs:sample:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cs:sample:remove')}]];
+        var prefix = ctx + "cs/sample";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                importUrl: prefix + "/importData",
+                importTemplateUrl: prefix + "/importTemplate",
+                // sortOrder: "desc",
+                modalName: "封样件的管理",
+
+                columns: [{
+                    // rememberSelected: true,
+                    field: 'state',
+                    checkbox: true
+                },
+                {
+                    align: "center",
+                    field: 'id',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    align: "center",
+                    field: 'sealedSample',
+                    title: '物料名称',
+                    sortable: true
+                },
+                {
+                    align: "center",
+                    field: 'eightD',
+                    title: '8D号'
+                },
+                {
+                    align: "center",
+                    field: 'sampleLocation',
+                    title: '样件位置'
+                },
+                {
+                    align: "center",
+                    field: 'supplier',
+                    title: '供应商'
+                },
+                {
+                    align: "center",
+                    field: 'supplyHouse',
+                    title: '供应商号'
+                },
+                {
+                    align: "center",
+                    field: 'business',
+                    title: '业务'
+                },
+                {
+                    align: "center",
+                    field: 'drawingTime',
+                    title: '图纸日期'
+                },
+                {
+                    align: "center",
+                    field: 'sealedSampleTime',
+                    title: '封样日期',
+                },
+                {
+                    align: "center",
+                    field: 'sampleIndate',
+                    title: '样件复检周期(年)'
+                },
+                {
+                    align: "center",
+                    field: 'sealedSampleDue',
+                    title: '样件到期日期',
+
+                },
+                {
+                    align: "center",
+                    field: 'remainingTime',
+                    title: '到今日还有(天)',
+
+                },
+                {
+                    align: "center",
+                    field: 'recheckTime',
+                    title: '实际复检日期',
+
+                },
+                {
+                    field: 'notes',
+                    title: '备注'
+                },
+
+                    // 在columns中格式化对应相关的列属性
+                {
+                    align: "center",
+                    field: 'images',
+                    title: '上传的图片',
+
+                    formatter: function(value, row, index) {
+
+                        return  $.table.imageView(value);
+
+                    },
+
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果样件信息已经存在，更新这条数据。"> 是否更新已经存在的样件信息
+                &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+</html>
