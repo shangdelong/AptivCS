@@ -179,13 +179,13 @@
                             color = 'green';
                         }else if(value < 0){
                             color = 'red';
-                        }else if(value == null){
-                            color = 'white';
-                        }else{
+                        }else if(value > 0 && value <=30){
                             color = 'yellow';
+                        }else{
+                            color = 'white';
                         }
                         // return '<div class="badge badge-primary" style="background-color:' + color + '">' + value + '</div>';
-                        return '<div class="badge-primary" style="background-color:' + color + ' " >' + value + '</div>';
+                        return '<div style="background-color:' + color + '; font-weight: bold; font-size: 15px; color: #FFFFFF; height: 30px; text-align: center;line-height: 30px "  >' + value + '</div>';
                     },
                 },
                 {

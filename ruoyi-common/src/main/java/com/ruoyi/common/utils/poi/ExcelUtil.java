@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -1331,7 +1332,9 @@ public class ExcelUtil<T>
      */
     public String encodingFilename(String filename)
     {
-        filename = UUID.randomUUID() + "_" + filename + ".xlsx";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        filename = UUID.randomUUID() + "_" + filename + ".xlsx";//原来时间戳加文件名
+        filename =  sdf.format(new Date()) + "_" + filename + ".xlsx";
         return filename;
     }
 
