@@ -14,10 +14,10 @@
                                 <label>物料名称：</label>
                                 <input type="text" name="sealedSample" autocomplete="off"/>
                             </li>
-                            <li>
-                                <label>8D号：</label>
-                                <input type="text" name="eightD" autocomplete="off"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>8位码：</label>-->
+<!--                                <input type="text" name="eightD" autocomplete="off"/>-->
+<!--                            </li>-->
                             <li>
                                 <label>样件位置：</label>
                                 <input type="text" name="sampleLocation" autocomplete="off"/>
@@ -102,7 +102,7 @@
                 exportUrl: prefix + "/export",
                 importUrl: prefix + "/importData",
                 importTemplateUrl: prefix + "/importTemplate",
-                // sortOrder: "desc",
+                sortOrder: "acs",
                 modalName: "封样件的管理",
 
                 columns: [{
@@ -125,7 +125,7 @@
                 {
                     align: "center",
                     field: 'eightD',
-                    title: '8D号'
+                    title: '8位码'
                 },
                 {
                     align: "center",
@@ -172,7 +172,21 @@
                     align: "center",
                     field: 'remainingTime',
                     title: '到今日还有(天)',
+                    formatter: function(value, row, index) {
 
+                        var color;
+                        if(value > 30){
+                            color = 'green';
+                        }else if(value < 0){
+                            color = 'red';
+                        }else if(value == null){
+                            color = 'white';
+                        }else{
+                            color = 'yellow';
+                        }
+                        // return '<div class="badge badge-primary" style="background-color:' + color + '">' + value + '</div>';
+                        return '<div class="badge-primary" style="background-color:' + color + ' " >' + value + '</div>';
+                    },
                 },
                 {
                     align: "center",

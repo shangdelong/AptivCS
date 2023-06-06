@@ -991,6 +991,11 @@ button.dim:active:before {
     color: #FFFFFF;
 }
 
+/*.due{*/
+/*    color: #FFFFFF;*/
+/*    font-size: 11px;*/
+/*}*/
+
 .label-success, .badge-success {
     background-color: #1c84c6;
     color: #FFFFFF;

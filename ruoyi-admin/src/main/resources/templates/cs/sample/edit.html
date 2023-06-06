@@ -16,15 +16,15 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">8D号：</label>
+                <label class="col-sm-3 control-label is-required">8位码：</label>
                 <div class="col-sm-8">
-                    <input name="eightD" th:field="*{eightD}" class="form-control" type="text" required autocomplete="off">
+                    <input name="eightD" th:field="*{eightD}" class="form-control" type="text" required autocomplete="off" data-rule="^[a-zA-Z\d]{8}" data-msg="请按照规则输入！" placeholder="例：A1234567">
                 </div>
             </div>
-            <div class="form-group">    
+            <div class="form-group" >
                 <label class="col-sm-3 control-label is-required">样件位置：</label>
                 <div class="col-sm-8">
-                    <input name="sampleLocation" th:field="*{sampleLocation}" class="form-control" type="text" data-rule="^[A-Z]+[1-100]+[-]+[1-100]+[-]+[1-100]+$" data-msg="请按照(A-Z)(数字)-(数字)-(数字)的规则输入！" placeholder="例：A1-1-1" required autocomplete="off">
+                    <input name="sampleLocation" th:field="*{sampleLocation}" class="form-control" type="text" data-rule="^[A-Z]+[1-100]+[-]+[1-100]+[-]+[1-100]+$" data-msg="请按照例子输入！" placeholder="例：A1-1-1" required autocomplete="off">
                 </div>
             </div>
             <div class="form-group">    
@@ -222,16 +222,21 @@
                 //现在时间距样件到期时间有多少天
                 var startDate = moment().format('YYYY-MM-DD');//获取当前时间
                 console.log('当前时间 ' + startDate);
-                // var endDate = moment($("input[name='sealedSampleDue']").val());//获取样件到期时间
-                var endDate = $("input[name='sealedSampleDue']").val();//获取样件到期时间
+                var endDate = moment($("input[name='sealedSampleDue']").val());//获取样件到期时间
+                console.log('到期时间 ' + endDate);
+                // var endDate = $("input[name='sealedSampleDue']").val();//获取样件到期时间
                 // var endDateYear = new Date(endDate).getFullYear();
                 // var endDateMonth = new Date(endDate).getMonth() + 1;
                 // var endDateDay = new Date(endDate).getDate();
                 // var end_date = `${endDateYear}-${endDateMonth}-${endDateDay}`;
-                var end_date = new Date(endDate);
-                var end_date1 = moment(end_date).format('YYYY-MM-DD');
-                console.log('到期时间 ' + end_date1);
-                var days = end_date1.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
+                // var end_date = new Date(endDate);
+                // console.log('到期时间 ' + end_date);
+                // var end_date1 = moment(end_date).format('YYYY-MM-DD');
+                // console.log('到期时间 ' + end_date1);
+                // var time = Math.abs(end_date1.getTime() - startDate.getTime());
+                // var days = Math.ceil(time / (1000 * 3600 * 24));
+                // var days = end_date1.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
+                var days = endDate.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
                 console.log('现在到样件到期日期还有 ' + days + ' 天');
                 $("input[name='remainingTime']").val(days);//更新到距今还有多少天输入框
                 setTimeout(updateCurrentTime, 1000);// 每秒更新一次,通过这种方式，每次更新当前时间后，我们都会调用 setTimeout() 函数并递归调用自身，实现了实时监听当前时间的效果。而在第一次调用 setTimeout() 函数时，我们需要手动调用一次 updateCurrentTime() 函数，以触发递归调用的开始。
