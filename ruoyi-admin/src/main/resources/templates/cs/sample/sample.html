@@ -13,6 +13,7 @@
                             <li>
                                 <label>物料名称：</label>
                                 <input type="text" name="sealedSample" autocomplete="off"/>
+
                             </li>
 <!--                            <li>-->
 <!--                                <label>8位码：</label>-->
@@ -54,9 +55,9 @@
 <!--                            </li>-->
                             <li class="select-time">
                                 <label>样件到期日期：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSealedSampleDue]"/>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSealedSampleDue]" autocomplete="off"/>
                                 <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSealedSampleDue]"/>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSealedSampleDue]" autocomplete="off"/>
                             </li>
 <!--                            <li>-->
 <!--                                <label>到今日还有：</label>-->
@@ -163,7 +164,8 @@
                 {
                     align: "center",
                     field: 'sampleLocation',
-                    title: '样件位置'
+                    title: '样件位置',
+                    sortable: true
                 },
                 {
                     align: "center",
@@ -199,12 +201,15 @@
                     align: "center",
                     field: 'sealedSampleDue',
                     title: '样件到期日期',
+                    sortable: true
 
                 },
                 {
                     align: "center",
                     field: 'remainingTime',
                     title: '到今日还有(天)',
+                    sortable: true,
+
                     formatter: function(value, row, index) {
 
                         var color;

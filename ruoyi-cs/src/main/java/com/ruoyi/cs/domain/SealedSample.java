@@ -1,6 +1,8 @@
 package com.ruoyi.cs.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -238,4 +240,7 @@ public class SealedSample extends BaseEntity
             .append("updateTime", getUpdateTime())
             .toString();
     }
+
+//    public void addAttribute(String list, List<SealedSample> list1) {
+//    }
 }

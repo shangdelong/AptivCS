@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.cs;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.domain.entity.SysUser;
@@ -57,8 +59,10 @@ public class SealedSampleController extends BaseController
     {
         startPage();
         List<SealedSample> list = sealedSampleService.selectSealedSampleList(sealedSample);
+//        sealedSample.addAttribute("list", list);//增加
         return getDataTable(list);
     }
+
 
     /**
      * 导出封样件的管理列表
@@ -131,5 +135,21 @@ public class SealedSampleController extends BaseController
     {
         return toAjax(sealedSampleService.deleteSealedSampleByIds(ids));
     }
+
+//    @RequiresPermissions("cs:sample:getData")
+//    @RequestMapping("/getData")
+//    @ResponseBody
+//    public List<Map<String, Object>> getData() {
+//        List<Map<String, Object>> dataList = new ArrayList<>();
+//        try {
+//            // 这里使用JdbcTemplate连接数据库进行查询
+//            String sql = "SELECT id, name FROM table";
+//            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+//            dataList.addAll(result);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return dataList;
+//    }
 
 }

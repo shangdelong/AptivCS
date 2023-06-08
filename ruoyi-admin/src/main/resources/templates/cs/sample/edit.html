@@ -48,6 +48,7 @@
                         <option value="大众">大众</option>
                         <option value="现代">现代</option>
                         <option value="长城">长城</option>
+                        <option value="丰田">丰田</option>
                     </select>
                 </div>
             </div>
@@ -75,7 +76,7 @@
                     <select name="sampleIndate" th:field="*{sampleIndate}" class="form-control">
                         <option value="3">3</option>
                         <option value="5">5</option>
-
+<!--                        <option th:each="item: ${sampleIndate}" th:value="${item.sampleIndate}" th:text="${item.sampleIndate}"></option>-->
                     </select>
                 </div>
             </div>
