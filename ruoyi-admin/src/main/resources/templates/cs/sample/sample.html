@@ -38,10 +38,26 @@
 <!--                                <label>封样日期：</label>-->
 <!--                                <input type="text" class="time-input" placeholder="请选择封样日期" name="sealedSampleTime"/>-->
 <!--                            </li>-->
+<!--                            <li class="select-time">-->
+<!--                                <label>封样日期：</label>-->
+<!--                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSealedSampleTime]"/>-->
+<!--                                <span>-</span>-->
+<!--                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSealedSampleTime]"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>样件复检周期：</label>-->
+<!--                                <input type="text" name="sampleIndate"/>-->
+<!--                            </li>-->
 <!--                            <li>-->
 <!--                                <label>样件到期日期：</label>-->
 <!--                                <input type="text" class="time-input" placeholder="请选择样件到期日期" name="sealedSampleDue"/>-->
 <!--                            </li>-->
+                            <li class="select-time">
+                                <label>样件到期日期：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSealedSampleDue]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSealedSampleDue]"/>
+                            </li>
 <!--                            <li>-->
 <!--                                <label>到今日还有：</label>-->
 <!--                                <input type="text" name="remainingTime"/>-->
@@ -49,6 +65,22 @@
 <!--                            <li>-->
 <!--                                <label>实际复检日期：</label>-->
 <!--                                <input type="text" class="time-input" placeholder="请选择实际复检日期" name="recheckTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>备注：</label>-->
+<!--                                <input type="text" name="notes"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>上传的图片：</label>-->
+<!--                                <input type="text" name="images"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>创建时间：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>修改时间：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择修改时间" name="updateTime"/>-->
 <!--                            </li>-->
 <!--                            <li class="select-time">-->
 <!--                                <label style="width: 100px">样件到期区间：</label>-->
@@ -75,7 +107,7 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cs:sample:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="system:user:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="cs:sample:import">
                     <i class="fa fa-download"></i> 导入
                 </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cs:sample:export">
@@ -102,7 +134,8 @@
                 exportUrl: prefix + "/export",
                 importUrl: prefix + "/importData",
                 importTemplateUrl: prefix + "/importTemplate",
-                sortOrder: "acs",
+                sortName: "createTime",
+                sortOrder: "desc",
                 modalName: "封样件的管理",
 
                 columns: [{
@@ -212,6 +245,14 @@
 
                     },
 
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间'
                 },
 
                 {

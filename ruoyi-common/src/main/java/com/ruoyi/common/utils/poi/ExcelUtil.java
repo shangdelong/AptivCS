@@ -1332,11 +1332,11 @@ public class ExcelUtil<T>
      */
     public String encodingFilename(String filename)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 //        System.out.println("当前时间："+sdf.format(new Date()));
-//        filename = UUID.randomUUID() + "_" + filename + ".xlsx";//原来时间戳加文件名
-        filename =  sdf.format(new Date()) + "_" + filename + ".xlsx";
+        filename = UUID.randomUUID() + "_" + filename + ".xlsx";//原来时间戳加文件名
+//        filename =  sdf.format(new Date()) + "_" + filename + ".xlsx";
         System.out.println(filename);
         return filename;
     }

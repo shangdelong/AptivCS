@@ -18,13 +18,14 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">8位码：</label>
                 <div class="col-sm-8">
-                    <input name="eightD" th:field="*{eightD}" class="form-control" type="text" required autocomplete="off" data-rule="^[a-zA-Z\d]{8}" data-msg="请按照规则输入！" placeholder="例：A1234567">
+                    <input name="eightD" th:field="*{eightD}" class="form-control" type="text" required autocomplete="off" placeholder="例:A1234567、12345678">
                 </div>
             </div>
             <div class="form-group" >
                 <label class="col-sm-3 control-label is-required">样件位置：</label>
                 <div class="col-sm-8">
-                    <input name="sampleLocation" th:field="*{sampleLocation}" class="form-control" type="text" data-rule="^[A-Z]+[1-100]+[-]+[1-100]+[-]+[1-100]+$" data-msg="请按照例子输入！" placeholder="例：A1-1-1" required autocomplete="off">
+                    <input name="sampleLocation" th:field="*{sampleLocation}" class="form-control" type="text"  placeholder="例：A1-1-1" required autocomplete="off">
+<!--                    <input name="sampleLocation" th:field="*{sampleLocation}" class="form-control" type="text" data-rule="^[A-Z](?:[1-9]|[1-9][0-9]|100)-(?:[1-9]|[1-9][0-9]|100)-(?:[1-9]|[1-9][0-9]|100)$" data-msg="请按照例子输入！" placeholder="例：A1-1-1" required autocomplete="off">-->
                 </div>
             </div>
             <div class="form-group">    
@@ -156,6 +157,35 @@
         });
 
 
+        //零件号输入框的校验
+        $("input[name='eightD']").blur(function () {
+            var pattern = /^[a-zA-Z\d]{8}/;
+            var input_val = $(this).val();
+            if(input_val !== "" && pattern.test(input_val)){
+                // 符合规则，不做任何操作
+            } else {
+                // 不符合规则，清空输入框并给出提示信息
+
+                alert("输入不符合规则！");
+                $(this).val("");
+
+            }
+        })
+
+        //样件位置输入框的校验
+        $("input[name='sampleLocation']").blur(function () {
+            var pattern = /^[A-Z](?:[1-9]|[1-9][0-9]|100)-(?:[1-9]|[1-9][0-9]|100)-(?:[1-9]|[1-9][0-9]|100)$/;
+            var input_val = $(this).val();
+            if(input_val !== "" && pattern.test(input_val)){
+                // 符合规则，不做任何操作
+            } else {
+                // 不符合规则，清空输入框并给出提示信息
+
+                alert("输入不符合规则！");
+                $(this).val("");
+
+            }
+        })
 
 
         $(function () {

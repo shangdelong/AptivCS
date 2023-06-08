@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.cs.mapper.SealedSampleMapper;
 import com.ruoyi.cs.domain.SealedSample;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.DateUtils;
 
 /**
  * 封样件的管理Service业务层处理
@@ -46,7 +47,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
     /**
-     * 新增封样件的管理
+     * 新增封样件
      * 
      * @param sealedSample 封样件的管理
      * @return 结果
@@ -54,11 +55,12 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     @Override
     public int insertSealedSample(SealedSample sealedSample)
     {
+        sealedSample.setCreateTime(DateUtils.getNowDate());
         return sealedSampleMapper.insertSealedSample(sealedSample);
     }
 
     /**
-     * 修改封样件的管理
+     * 修改封样件
      * 
      * @param sealedSample 封样件的管理
      * @return 结果
@@ -66,6 +68,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     @Override
     public int updateSealedSample(SealedSample sealedSample)
     {
+        sealedSample.setUpdateTime(DateUtils.getNowDate());
         return sealedSampleMapper.updateSealedSample(sealedSample);
     }
 

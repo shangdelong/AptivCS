@@ -234,6 +234,8 @@ public class SealedSample extends BaseEntity
             .append("recheckTime", getRecheckTime())
             .append("notes", getNotes())
             .append("images", getImages())
+            .append("createTime", getCreateTime())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }

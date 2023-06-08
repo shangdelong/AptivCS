@@ -20,29 +20,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="recheckTime"    column="recheck_time"    />
         <result property="notes"    column="notes"    />
         <result property="images"    column="images"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectSealedSampleVo">
-        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images from sealed_sample
+        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images, create_time, update_time from sealed_sample
     </sql>
 
     <select id="selectSealedSampleList" parameterType="SealedSample" resultMap="SealedSampleResult">
         <include refid="selectSealedSampleVo"/>
-        <where>  
+        <where>
             <if test="sealedSample != null  and sealedSample != ''"> and sealed_sample like concat('%', #{sealedSample}, '%')</if>
             <if test="eightD != null  and eightD != ''"> and eight_d like concat('%', #{eightD}, '%')</if>
             <if test="sampleLocation != null  and sampleLocation != ''"> and sample_location like concat('%', #{sampleLocation}, '%')</if>
             <if test="supplier != null  and supplier != ''"> and supplier like concat('%', #{supplier}, '%')</if>
             <if test="supplyHouse != null  and supplyHouse != ''"> and supply_house like concat('%', #{supplyHouse}, '%')</if>
             <if test="business != null  and business != ''"> and business like concat('%', #{business}, '%')</if>
-            <if test="drawingTime != null "> and drawing_time = #{drawingTime}</if>
-            <if test="sealedSampleTime != null "> and sealed_sample_time = #{sealedSampleTime}</if>
-            <if test="sampleIndate != null  and sampleIndate != ''"> and sample_indate = #{sampleIndate}</if>
-            <if test="sealedSampleDue != null "> and sealed_sample_due = #{sealedSampleDue}</if>
-            <if test="remainingTime != null  and remainingTime != ''"> and remaining_time = #{remainingTime}</if>
+            <if test="drawingTime != null "> and drawing_time like concat('%', #{drawingTime}, '%')</if>
+            <if test="params.beginSealedSampleTime != null and params.beginSealedSampleTime != '' and params.endSealedSampleTime != null and params.endSealedSampleTime != ''"> and sealed_sample_time between #{params.beginSealedSampleTime} and #{params.endSealedSampleTime}</if>
+            <if test="sampleIndate != null  and sampleIndate != ''"> and sample_indate like concat('%', #{sampleIndate}, '%')</if>
+            <if test="params.beginSealedSampleDue != null and params.beginSealedSampleDue != '' and params.endSealedSampleDue != null and params.endSealedSampleDue != ''"> and sealed_sample_due between #{params.beginSealedSampleDue} and #{params.endSealedSampleDue}</if>
+            <if test="remainingTime != null  and remainingTime != ''"> and remaining_time &lt;= #{remainingTime}</if>
             <if test="recheckTime != null "> and recheck_time = #{recheckTime}</if>
             <if test="notes != null  and notes != ''"> and notes = #{notes}</if>
             <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="createTime != null "> and create_time like concat('%', #{createTime}, '%')</if>
+            <if test="updateTime != null "> and update_time like concat('%', #{updateTime}, '%')</if>
         </where>
     </select>
     
@@ -68,6 +72,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recheckTime != null">recheck_time,</if>
             <if test="notes != null">notes,</if>
             <if test="images != null">images,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="sealedSample != null and sealedSample != ''">#{sealedSample},</if>
@@ -84,6 +90,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recheckTime != null">#{recheckTime},</if>
             <if test="notes != null">#{notes},</if>
             <if test="images != null">#{images},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
@@ -104,6 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recheckTime != null">recheck_time = #{recheckTime},</if>
             <if test="notes != null">notes = #{notes},</if>
             <if test="images != null">images = #{images},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>
