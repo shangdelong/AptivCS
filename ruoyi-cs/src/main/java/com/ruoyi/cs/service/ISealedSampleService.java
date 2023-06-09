@@ -59,4 +59,14 @@ public interface ISealedSampleService
      */
     public int deleteSealedSampleById(Long id);
 
+    /**
+     *
+     * @param sampleList
+     * @param updateSupport
+     * @param loginName
+     * @return
+     */
+    String importSample(List<SealedSample> sampleList, boolean updateSupport, String loginName);
+
+//    List<SealedSample> findAllItems();
 }

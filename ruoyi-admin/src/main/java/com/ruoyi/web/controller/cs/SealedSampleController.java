@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.druid.sql.ast.expr.SQLCaseExpr;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.file.FileUploadUtils;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
@@ -76,6 +78,27 @@ public class SealedSampleController extends BaseController
         List<SealedSample> list = sealedSampleService.selectSealedSampleList(sealedSample);
         ExcelUtil<SealedSample> util = new ExcelUtil<SealedSample>(SealedSample.class);
         return util.exportExcel(list, "封样件的管理数据");
+    }
+
+    @Log(title = "封样件的管理", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("cs:sample:import")
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<SealedSample> util = new ExcelUtil<SealedSample>(SealedSample.class);
+        List<SealedSample> sampleList = util.importExcel(file.getInputStream());
+        String message = sealedSampleService.importSample(sampleList, updateSupport, getLoginName());
+        return AjaxResult.success(message);
+    }
+
+    @RequiresPermissions("cs:sample:view")
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+        return util.importTemplateExcel("用户数据");
     }
 
     /**
@@ -150,6 +173,13 @@ public class SealedSampleController extends BaseController
 //            e.printStackTrace();
 //        }
 //        return dataList;
+//    }
+
+//    @GetMapping("/showItems")
+//    public String showItems(SealedSample sealedSample) {
+//        List<SealedSample> itemList = sealedSampleService.findAllItems();
+//        sealedSample.addAttribute("itemList", itemList);
+//        return "show_items";
 //    }
 
 }

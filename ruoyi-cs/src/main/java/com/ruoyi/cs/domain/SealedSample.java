@@ -1,7 +1,6 @@
 package com.ruoyi.cs.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -66,7 +65,7 @@ public class SealedSample extends BaseEntity
     private Date sealedSampleDue;
 
     /** 到今日还有（）天 */
-    @Excel(name = "到今日还有", readConverterExp = "到今日还有（）天")
+    @Excel(name = "到今日还有（）天", readConverterExp = "到今日还有（）天")
     private String remainingTime;
 
     /** 实际复检日期 */
@@ -82,7 +81,37 @@ public class SealedSample extends BaseEntity
     @Excel(name = "上传的图片")
     private String images;
 
-    public void setId(Long id) 
+    /** 创建时间 */
+    @Excel(name = "创建时间")
+    private Date createTime;
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    @Override
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    /** 修改时间 */
+    @Excel(name = "修改时间")
+    private Date updateTime;
+
+
+
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -240,6 +269,10 @@ public class SealedSample extends BaseEntity
             .append("updateTime", getUpdateTime())
             .toString();
     }
+
+//    public void addAttribute(String itemList, List<SealedSample> itemList1) {
+//    }
+
 
 //    public void addAttribute(String list, List<SealedSample> list1) {
 //    }
