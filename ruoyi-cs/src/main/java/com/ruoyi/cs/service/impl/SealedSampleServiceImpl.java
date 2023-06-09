@@ -1,14 +1,13 @@
 package com.ruoyi.cs.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
-import com.ruoyi.common.utils.security.Md5Utils;
 import com.ruoyi.cs.service.ISealedSampleService;
-import com.ruoyi.cs.service.ISysConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +49,16 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     public SealedSample selectSealedSampleById(Long id)
     {
         return sealedSampleMapper.selectSealedSampleById(id);
+    }
+
+    /**
+     *
+     * @param eightD 样件的零件号
+     * @return
+     */
+    @Override
+    public SealedSample selectSealedSampleByEightD(String eightD) {
+        return sealedSampleMapper.selectSealedSampleByEightD(eightD);
     }
 
     /**
@@ -116,7 +125,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
 
 
     @Override
-    public String importSample(List<SealedSample> sampleList, boolean updateSupport, String loginName) {
+    public String importSample(List<SealedSample> sampleList, boolean isUpdateSupport, String operName) {
         if (StringUtils.isNull(sampleList) || sampleList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -131,37 +140,43 @@ public class SealedSampleServiceImpl implements ISealedSampleService
             try
             {
                 // 验证是否存在这个样件
-                SealedSample s = sealedSampleMapper.selectSealedSampleById(sample.getId());
+                SealedSample s = sealedSampleMapper.selectSealedSampleByEightD(sample.getEightD());
                 if (StringUtils.isNull(s))
                 {
                     BeanValidators.validateWithException(validator, sample);
 //                    user.setPassword(Md5Utils.hash(user.getLoginName() + password));
-                    sample.setCreateBy(loginName);
+                    sample.setCreateBy(operName);
+//                     获取系统当前时间
+//                    Date time = new Date();
+
+//                     将当前时间存储到UserEntity中
+//                    sample.setCreateTime(time);
                     sealedSampleMapper.insertSealedSample(sample);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + sample.getSealedSample() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、物料名称 " + sample.getSealedSample() + " 导入成功");
                 }
-                else if (updateSupport)
+                else if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, sample);
 //                    checkUserAllowed(u);
 //                    checkUserDataScope(u.getUserId());
-//                    user.setUserId(u.getUserId());
-//                    user.setUpdateBy(operName);
+                    sample.setId(s.getId());
+                    sample.setUpdateBy(operName);
+
                     sealedSampleMapper.updateSealedSample(sample);
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、账号 " + sample.getSealedSample() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、物料名称 " + sample.getSealedSample() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、账号 " + sample.getSealedSample() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、物料名称 " + sample.getSealedSample() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、账号 " + sample.getSealedSample() + " 导入失败：";
+                String msg = "<br/>" + failureNum + "、物料名称 " + sample.getSealedSample() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
                 log.error(msg, e);
             }

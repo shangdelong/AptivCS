@@ -61,29 +61,34 @@ public class SealedSample extends BaseEntity
 
     /** 样件到期日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "样件到期日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "样件到期日期", width = 30, dateFormat = "yyyy-MM-dd",type = Excel.Type.EXPORT)
     private Date sealedSampleDue;
 
     /** 到今日还有（）天 */
-    @Excel(name = "到今日还有（）天", readConverterExp = "到今日还有（）天")
+    @Excel(name = "到今日还有（）天", readConverterExp = "到今日还有（）天",type = Excel.Type.EXPORT)
     private String remainingTime;
 
     /** 实际复检日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "实际复检日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "实际复检日期", width = 30, dateFormat = "yyyy-MM-dd",type = Excel.Type.EXPORT)
     private Date recheckTime;
 
     /** 备注 */
-    @Excel(name = "备注")
+    @Excel(name = "备注",type = Excel.Type.EXPORT)
     private String notes;
 
     /** 上传的图片 */
-    @Excel(name = "上传的图片")
+    @Excel(name = "上传的图片",type = Excel.Type.EXPORT)
     private String images;
 
     /** 创建时间 */
-    @Excel(name = "创建时间")
+    @Excel(name = "创建时间",type = Excel.Type.EXPORT)
     private Date createTime;
+
+    /** 修改时间 */
+    @Excel(name = "修改时间",type = Excel.Type.EXPORT)
+    private Date updateTime;
+
 
     @Override
     public Date getCreateTime() {
@@ -105,9 +110,6 @@ public class SealedSample extends BaseEntity
         this.updateTime = updateTime;
     }
 
-    /** 修改时间 */
-    @Excel(name = "修改时间")
-    private Date updateTime;
 
 
 
@@ -134,7 +136,7 @@ public class SealedSample extends BaseEntity
         this.eightD = eightD;
     }
 
-    public String getEightD() 
+    public String getEightD()
     {
         return eightD;
     }

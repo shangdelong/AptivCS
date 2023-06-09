@@ -20,6 +20,13 @@ public interface SealedSampleMapper
     public SealedSample selectSealedSampleById(Long id);
 
     /**
+     * 通过零件号查询样件
+     * @param eightD 零件号
+     * @return
+     */
+    public SealedSample selectSealedSampleByEightD(String eightD);
+
+    /**
      * 查询封样件的管理列表
      * 
      * @param sealedSample 封样件的管理
@@ -58,4 +65,6 @@ public interface SealedSampleMapper
      * @return 结果
      */
     public int deleteSealedSampleByIds(String[] ids);
+
+
 }

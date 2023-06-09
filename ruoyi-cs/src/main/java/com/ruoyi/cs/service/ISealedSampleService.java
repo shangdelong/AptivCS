@@ -19,6 +19,7 @@ public interface ISealedSampleService
      */
     public SealedSample selectSealedSampleById(Long id);
 
+    public SealedSample selectSealedSampleByEightD(String eightD);
     /**
      * 查询封样件的管理列表
      * 
@@ -61,12 +62,13 @@ public interface ISealedSampleService
 
     /**
      *
-     * @param sampleList
-     * @param updateSupport
-     * @param loginName
+     * @param sampleList 封样数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
      * @return
      */
-    String importSample(List<SealedSample> sampleList, boolean updateSupport, String loginName);
+    String importSample(List<SealedSample> sampleList, boolean isUpdateSupport, String operName);
 
+//    public void checkUserDataScope(Long userId);
 //    List<SealedSample> findAllItems();
 }

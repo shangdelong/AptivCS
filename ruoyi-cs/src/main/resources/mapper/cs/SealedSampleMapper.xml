@@ -54,6 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSealedSampleVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectSealedSampleByEightD" parameterType="String" resultMap="SealedSampleResult">
+        <include refid="selectSealedSampleVo"/>
+        where eight_d = #{eightD}
+    </select>
         
     <insert id="insertSealedSample" parameterType="SealedSample" useGeneratedKeys="true" keyProperty="id">
         insert into sealed_sample
