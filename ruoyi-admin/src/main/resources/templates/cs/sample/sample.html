@@ -159,7 +159,7 @@
                 {
                     align: "center",
                     field: 'eightD',
-                    title: '8位码'
+                    title: '零件号'
                 },
                 {
                     align: "center",
@@ -208,7 +208,7 @@
                     align: "center",
                     field: 'remainingTime',
                     title: '到今日还有(天)',
-                    // sortable: true,
+                    sortable: true,
 
                     formatter: function(value, row, index) {
 
@@ -223,7 +223,7 @@
                             color = 'white';
                         }
                         // return '<div class="badge badge-primary" style="background-color:' + color + '">' + value + '</div>';
-                        return '<div style="background-color:' + color + '; font-weight: bold; font-size: 15px; color: #FFFFFF; height: 30px; text-align: center;line-height: 30px "  >' + value + '</div>';
+                        return '<div style="background-color:' + color + '; font-weight: bold; font-size: 15px; color: #000000; height: 30px; text-align: center;line-height: 30px "  >' + value + '</div>';
                     },
                 },
                 {
