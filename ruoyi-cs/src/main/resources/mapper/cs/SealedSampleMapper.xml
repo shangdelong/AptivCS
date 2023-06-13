@@ -22,10 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="images"    column="images"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="userIid"    column="user_iid"    />
     </resultMap>
 
     <sql id="selectSealedSampleVo">
-        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images, create_time, update_time from sealed_sample
+        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images, create_time, update_time, user_iid from sealed_sample
+    </sql>
+
+    <sql id="selectSealedSampleVoA">
+        select id, sealed_sample, eight_d, sample_location, supplier, supply_house, business, drawing_time, sealed_sample_time, sample_indate, sealed_sample_due, remaining_time, recheck_time, notes, images, create_time, update_time, user_iid from sealed_sample
     </sql>
 
     <select id="selectSealedSampleList" parameterType="SealedSample" resultMap="SealedSampleResult">
@@ -47,6 +52,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="images != null  and images != ''"> and images = #{images}</if>
             <if test="createTime != null "> and create_time like concat('%', #{createTime}, '%')</if>
             <if test="updateTime != null "> and update_time like concat('%', #{updateTime}, '%')</if>
+            <if test="userIid != null "> and user_iid = #{userIid}</if>
+        </where>
+    </select>
+
+    <select id="selectSealedSampleDueList" parameterType="SealedSample" resultMap="SealedSampleResult">
+        <include refid="selectSealedSampleVoA"/>
+        <where>
+            remaining_time &lt;= 2000
         </where>
     </select>
     
@@ -79,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="images != null">images,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="userIid != null">user_iid,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="sealedSample != null and sealedSample != ''">#{sealedSample},</if>
@@ -97,6 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="images != null">#{images},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="userIid != null">#{userIid},</if>
          </trim>
     </insert>
 
@@ -119,6 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="images != null">images = #{images},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="userIid != null">user_iid = #{userIid},</if>
         </trim>
         where id = #{id}
     </update>

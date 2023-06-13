@@ -4,13 +4,19 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
 import com.ruoyi.cs.service.ISealedSampleService;
+import com.ruoyi.system.mapper.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.ruoyi.cs.mapper.SealedSampleMapper;
 import com.ruoyi.cs.domain.SealedSample;
@@ -26,6 +32,7 @@ import javax.validation.Validator;
  * @date 2023-05-23
  */
 @Service
+@Component
 public class SealedSampleServiceImpl implements ISealedSampleService
 {
     private static final Logger log = LoggerFactory.getLogger(SealedSampleServiceImpl.class);
@@ -33,11 +40,16 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     @Autowired
     private SealedSampleMapper sealedSampleMapper;
 
-//    @Autowired
-//    private ISysConfigService configService;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     @Autowired
     protected Validator validator;
+
+    @Autowired
+    private JavaMailSender mailSender; // JavaMailSender是Spring Boot默认提供的邮件发送工具类
+
+    @Scheduled(cron = "0 20 18 * * ?") // 每天早上8点检查
 
     /**
      * 查询封样件的管理
@@ -193,8 +205,42 @@ public class SealedSampleServiceImpl implements ISealedSampleService
         return successMsg.toString();
     }
 
-//    @Override
-//    public List<SealedSample> findAllItems() {
-//        return null;
-//    }
+
+
+    @Override
+    public void selectSealedSampleDueList(SealedSample sealedSample)
+    {
+        List<SealedSample> sealedSampleList = selectSealedSampleDueListA();
+          for(SealedSample sealedSample1:sealedSampleList){
+              String email = sysUserMapper.selectUserEmailById(sealedSample1.getUserIid());
+              // 发送邮件提醒
+              SimpleMailMessage message = new SimpleMailMessage();
+              message.setFrom("2924639689@qq.com");
+              message.setTo(email);
+              message.setSubject("以下样件30天内即将过期！");
+//              message.setText("您好，您的账号已过期，请尽快续费。");
+              message.setText(sealedSample1.getId()+sealedSample1.getSealedSample()+sealedSample1.getEightD()+sealedSample1.getSampleLocation()+sealedSample1.getBusiness()+sealedSample1.getSealedSampleDue()+sealedSample1.getRemainingTime());
+              mailSender.send(message);
+          }
+//        for (SealedSample sealedsample:selectSealedSampleDueList(sealedSample)) {
+//            if(isExpired(sealedsample)){ // 判断是否快过期
+//                // 发送邮件提醒
+//                SimpleMailMessage message = new SimpleMailMessage();
+//                message.setFrom("发送邮件的邮箱地址");
+//                for (SysUser sysuser: selectSysUserEmail(user)) {
+//                    message.setTo(sysuser.getEmail());
+//                }
+//
+//                message.setSubject("您的账号已过期");
+//                message.setText("您好，您的账号已过期，请尽快续费。");
+//                mailSender.send(message);
+//            }
+//        }
+    }
+
+    public List<SealedSample> selectSealedSampleDueListA(){
+        return sealedSampleMapper.selectSealedSampleDueList();
+    }
+
+
 }

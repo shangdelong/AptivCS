@@ -9,7 +9,7 @@ import com.ruoyi.cs.domain.SealedSample;
  * @author shangshang
  * @date 2023-05-23
  */
-public interface SealedSampleMapper 
+public interface SealedSampleMapper
 {
     /**
      * 查询封样件的管理
@@ -67,4 +67,5 @@ public interface SealedSampleMapper
     public int deleteSealedSampleByIds(String[] ids);
 
 
+    List<SealedSample> selectSealedSampleDueList();
 }

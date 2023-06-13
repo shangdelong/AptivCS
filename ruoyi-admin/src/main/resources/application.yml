@@ -45,6 +45,26 @@ user:
 
 # Spring配置
 spring:
+
+
+#  spring.mail.host=smtp.邮箱服务商
+#  spring.mail.username=发送邮件的邮箱地址
+#  spring.mail.password=发送邮件的邮箱授权码
+#  spring.mail.properties.mail.smtp.auth=true
+#  spring.mail.properties.mail.smtp.starttls.enable=true
+#  spring.mail.properties.mail.smtp.starttls.required=true
+#  spring.mail.properties.mail.smtp.ssl.trust=smtp.邮箱服务商
+
+  #QQ邮箱邮件发送服务配置（固定写法）
+  mail:
+    #QQ邮箱邮件发送服务配置（固定写法）
+    host: smtp.qq.com
+    port: 587
+    # 配置个人QQ账户和密码（密码是加密后的授权码）
+    username: 2924639689@qq.com
+    password: haqpguodznxtdefj
+
+
   # 模板引擎
   thymeleaf:
     mode: HTML

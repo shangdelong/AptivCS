@@ -551,4 +551,9 @@ public class SysUserServiceImpl implements ISysUserService
     {
         return userMapper.updateUser(user);
     }
+
+    @Override
+    public String selectUserEmailById(Long userId) {
+        return userMapper.selectUserEmailById(userId);
+    }
 }

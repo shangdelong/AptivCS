@@ -65,6 +65,20 @@ public class SealedSampleController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 查询到期封样件的列表
+     */
+//    @RequiresPermissions("cs:sample:list")
+//    @PostMapping("/list")
+//    @ResponseBody
+//    public TableDataInfo dueList(SealedSample sealedSample)
+//    {
+//        startPage();
+//        List<SealedSample> list = sealedSampleService.selectSealedSampleDueList(sealedSample);
+////        sealedSample.addAttribute("list", list);//增加
+//        return getDataTable(list);
+//    }
+
 
     /**
      * 导出封样件的管理列表

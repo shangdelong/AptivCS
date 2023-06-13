@@ -69,6 +69,11 @@ public interface ISealedSampleService
      */
     String importSample(List<SealedSample> sampleList, boolean isUpdateSupport, String operName);
 
-//    public void checkUserDataScope(Long userId);
-//    List<SealedSample> findAllItems();
+    /**
+     * 样件到列表
+     * @param sealedSample
+     * @return
+     */
+    void selectSealedSampleDueList(SealedSample sealedSample);
+
 }
