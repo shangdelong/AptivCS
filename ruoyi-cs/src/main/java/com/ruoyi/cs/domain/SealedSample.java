@@ -66,7 +66,7 @@ public class SealedSample extends BaseEntity
 
     /** 到今日还有（）天 */
     @Excel(name = "到今日还有（）天", readConverterExp = "到今日还有（）天",type = Excel.Type.EXPORT)
-    private Long remainingTime;
+    private String remainingTime;
 
     /** 实际复检日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -198,12 +198,12 @@ public class SealedSample extends BaseEntity
     {
         return sealedSampleTime;
     }
-    public void setSampleIndate(String sampleIndate) 
+    public void setSampleIndate(String sampleIndate)
     {
         this.sampleIndate = sampleIndate;
     }
 
-    public String getSampleIndate() 
+    public String getSampleIndate()
     {
         return sampleIndate;
     }
@@ -216,12 +216,12 @@ public class SealedSample extends BaseEntity
     {
         return sealedSampleDue;
     }
-    public void setRemainingTime(Long remainingTime)
+    public void setRemainingTime(String remainingTime)
     {
         this.remainingTime = remainingTime;
     }
 
-    public Long getRemainingTime()
+    public String getRemainingTime()
     {
         return remainingTime;
     }

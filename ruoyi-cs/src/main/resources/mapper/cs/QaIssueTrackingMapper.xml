@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.cs.mapper.QaIssueTrackingMapper">
+    
+    <resultMap type="QaIssueTracking" id="QaIssueTrackingResult">
+        <result property="issueId"    column="issue_id"    />
+        <result property="issueDate"    column="issue_date"    />
+        <result property="partNumber"    column="part_number"    />
+        <result property="project"    column="project"    />
+        <result property="partName"    column="part_name"    />
+        <result property="supplier"    column="supplier"    />
+        <result property="defectDescription"    column="defect_description"    />
+        <result property="feedbackArea"    column="feedback_area"    />
+        <result property="isRepeat"    column="is_repeat"    />
+        <result property="problemPicture"    column="problem_picture"    />
+        <result property="handlingMethods"    column="handling_methods"    />
+        <result property="qualifiedQty"    column="qualified_qty"    />
+        <result property="defectQty"    column="defect_qty"    />
+        <result property="storageLocation"    column="storage_location"    />
+        <result property="redCardNumber"    column="red_card_number"    />
+        <result property="responsiblePerson"    column="responsible_person"    />
+        <result property="isSupplierIssue"    column="is_supplier_issue"    />
+        <result property="prrQmr"    column="prr_qmr"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectQaIssueTrackingVo">
+        select issue_id, issue_date, part_number, project, part_name, supplier, defect_description, feedback_area, is_repeat, problem_picture, handling_methods, qualified_qty, defect_qty, storage_location, red_card_number, responsible_person, is_supplier_issue, prr_qmr, status, remark from qa_issue_tracking
+    </sql>
+
+    <select id="selectQaIssueTrackingList" parameterType="QaIssueTracking" resultMap="QaIssueTrackingResult">
+        <include refid="selectQaIssueTrackingVo"/>
+        <where>  
+            <if test="issueDate != null "> and issue_date = #{issueDate}</if>
+            <if test="partNumber != null  and partNumber != ''"> and part_number = #{partNumber}</if>
+            <if test="project != null  and project != ''"> and project like concat('%', #{project}, '%')</if>
+            <if test="partName != null  and partName != ''"> and part_name like concat('%', #{partName}, '%')</if>
+            <if test="supplier != null  and supplier != ''"> and supplier like concat('%', #{supplier}, '%')</if>
+            <if test="defectDescription != null  and defectDescription != ''"> and defect_description like concat('%', #{defectDescription}, '%')</if>
+            <if test="feedbackArea != null  and feedbackArea != ''"> and feedback_area like concat('%', #{feedbackArea}, '%')</if>
+            <if test="isRepeat != null "> and is_repeat = #{isRepeat}</if>
+            <if test="problemPicture != null  and problemPicture != ''"> and problem_picture = #{problemPicture}</if>
+            <if test="handlingMethods != null  and handlingMethods != ''"> and handling_methods = #{handlingMethods}</if>
+            <if test="qualifiedQty != null "> and qualified_qty = #{qualifiedQty}</if>
+            <if test="defectQty != null "> and defect_qty = #{defectQty}</if>
+            <if test="storageLocation != null  and storageLocation != ''"> and storage_location like concat('%', #{storageLocation}, '%')</if>
+            <if test="redCardNumber != null  and redCardNumber != ''"> and red_card_number = #{redCardNumber}</if>
+            <if test="responsiblePerson != null  and responsiblePerson != ''"> and responsible_person like concat('%', #{responsiblePerson}, '%')</if>
+            <if test="isSupplierIssue != null "> and is_supplier_issue = #{isSupplierIssue}</if>
+            <if test="prrQmr != null  and prrQmr != ''"> and prr_qmr = #{prrQmr}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectQaIssueTrackingByIssueId" parameterType="Long" resultMap="QaIssueTrackingResult">
+        <include refid="selectQaIssueTrackingVo"/>
+        where issue_id = #{issueId}
+    </select>
+        
+    <insert id="insertQaIssueTracking" parameterType="QaIssueTracking" useGeneratedKeys="true" keyProperty="issueId">
+        insert into qa_issue_tracking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="issueDate != null">issue_date,</if>
+            <if test="partNumber != null">part_number,</if>
+            <if test="project != null">project,</if>
+            <if test="partName != null">part_name,</if>
+            <if test="supplier != null">supplier,</if>
+            <if test="defectDescription != null">defect_description,</if>
+            <if test="feedbackArea != null">feedback_area,</if>
+            <if test="isRepeat != null">is_repeat,</if>
+            <if test="problemPicture != null">problem_picture,</if>
+            <if test="handlingMethods != null">handling_methods,</if>
+            <if test="qualifiedQty != null">qualified_qty,</if>
+            <if test="defectQty != null">defect_qty,</if>
+            <if test="storageLocation != null">storage_location,</if>
+            <if test="redCardNumber != null">red_card_number,</if>
+            <if test="responsiblePerson != null">responsible_person,</if>
+            <if test="isSupplierIssue != null">is_supplier_issue,</if>
+            <if test="prrQmr != null">prr_qmr,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="issueDate != null">#{issueDate},</if>
+            <if test="partNumber != null">#{partNumber},</if>
+            <if test="project != null">#{project},</if>
+            <if test="partName != null">#{partName},</if>
+            <if test="supplier != null">#{supplier},</if>
+            <if test="defectDescription != null">#{defectDescription},</if>
+            <if test="feedbackArea != null">#{feedbackArea},</if>
+            <if test="isRepeat != null">#{isRepeat},</if>
+            <if test="problemPicture != null">#{problemPicture},</if>
+            <if test="handlingMethods != null">#{handlingMethods},</if>
+            <if test="qualifiedQty != null">#{qualifiedQty},</if>
+            <if test="defectQty != null">#{defectQty},</if>
+            <if test="storageLocation != null">#{storageLocation},</if>
+            <if test="redCardNumber != null">#{redCardNumber},</if>
+            <if test="responsiblePerson != null">#{responsiblePerson},</if>
+            <if test="isSupplierIssue != null">#{isSupplierIssue},</if>
+            <if test="prrQmr != null">#{prrQmr},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQaIssueTracking" parameterType="QaIssueTracking">
+        update qa_issue_tracking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="issueDate != null">issue_date = #{issueDate},</if>
+            <if test="partNumber != null">part_number = #{partNumber},</if>
+            <if test="project != null">project = #{project},</if>
+            <if test="partName != null">part_name = #{partName},</if>
+            <if test="supplier != null">supplier = #{supplier},</if>
+            <if test="defectDescription != null">defect_description = #{defectDescription},</if>
+            <if test="feedbackArea != null">feedback_area = #{feedbackArea},</if>
+            <if test="isRepeat != null">is_repeat = #{isRepeat},</if>
+            <if test="problemPicture != null">problem_picture = #{problemPicture},</if>
+            <if test="handlingMethods != null">handling_methods = #{handlingMethods},</if>
+            <if test="qualifiedQty != null">qualified_qty = #{qualifiedQty},</if>
+            <if test="defectQty != null">defect_qty = #{defectQty},</if>
+            <if test="storageLocation != null">storage_location = #{storageLocation},</if>
+            <if test="redCardNumber != null">red_card_number = #{redCardNumber},</if>
+            <if test="responsiblePerson != null">responsible_person = #{responsiblePerson},</if>
+            <if test="isSupplierIssue != null">is_supplier_issue = #{isSupplierIssue},</if>
+            <if test="prrQmr != null">prr_qmr = #{prrQmr},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where issue_id = #{issueId}
+    </update>
+
+    <delete id="deleteQaIssueTrackingByIssueId" parameterType="Long">
+        delete from qa_issue_tracking where issue_id = #{issueId}
+    </delete>
+
+    <delete id="deleteQaIssueTrackingByIssueIds" parameterType="String">
+        delete from qa_issue_tracking where issue_id in 
+        <foreach item="issueId" collection="array" open="(" separator="," close=")">
+            #{issueId}
+        </foreach>
+    </delete>
+
+</mapper>

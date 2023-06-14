@@ -73,11 +73,11 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">样件复检周期(年)：</label>
                 <div class="col-sm-8">
-                    <select name="sampleIndate" th:field="*{sampleIndate}" class="form-control">
-                        <option value="3">3</option>
-                        <option value="5">5</option>
-<!--                        <option th:each="item: ${itemList}" th:value="${item.sampleIndate}" th:text="${item.sampleIndate}"></option>-->
-                    </select>
+                    <input name="sampleIndate" th:field="*{sampleIndate}" class="form-control" readonly>
+<!--                    <select name="sampleIndate" th:field="*{sampleIndate}" class="form-control">-->
+<!--                        <option value="3">3</option>-->
+<!--                        <option value="5">5</option>-->
+<!--                    </select>-->
                 </div>
             </div>
             <div class="form-group">    
@@ -190,6 +190,22 @@
 
 
         $(function () {
+
+            // // 监听sealedSample输入框的 change 事件
+            // $("input[name='sealedSample']").change(function () {
+            //     var conditionsT = ["端子", "卡环", "压接筒", "环形端子", "导线", "屏蔽线"];
+            //     var conditionsF = ["波纹管", "塑件", "扎带", "卡钉", "管夹", "盖子", "盲栓", "锁片", "橡胶件", "支架", "半成品", "PVC套管", "水管", "编织管", "密封圈", "保险丝", "螺帽螺栓", "热缩管", "继电器", "电阻", "电容", "电子锁", "二极管", "PCBA", "其他特殊类"];
+            //     var conditionsO = ["油脂", "胶带类", "发泡材料", "防水泥"];
+            //     var sealedSampleValue = $("input[name='sealedSample']").val();// 获取其他输入框的值
+            //     if (conditionsT.includes(sealedSampleValue)){
+            //         $("input[name='sampleIndate']").val(3);
+            //     }else if (conditionsF.includes(sealedSampleValue)||sealedSampleValue.includes("橡")){
+            //         $("input[name='sampleIndate']").val(5);
+            //     }else if (conditionsO.includes(sealedSampleValue)||sealedSampleValue.includes("胶带")){
+            //         $("input[name='sampleIndate']").val("N/A");
+            //     }
+            // })
+
             //封样件时间
             $("input[name='sealedSampleTime']").datetimepicker({
                 dateformat: "yyyy-mm-dd",
@@ -197,9 +213,23 @@
                 autoclose: true,
             });
 
-            //选则日期和改变日期的时候触发事件
-            $("input[name='sealedSampleTime'],select[name='sampleIndate']").change(function(){
 
+
+            //选则日期和改变日期的时候触发事件
+            $("input[name='sealedSampleTime'],input[name='sealedSample']").change(function(){
+
+                //根据零件名称自动显示出零件到期周期
+                var conditionsT = ["端子", "卡环", "压接筒", "环形端子", "导线", "屏蔽线"];
+                var conditionsF = ["波纹管", "塑件", "扎带", "卡钉", "管夹", "盖子", "盲栓", "锁片", "橡胶件", "支架", "半成品", "PVC套管", "水管", "编织管", "密封圈", "保险丝", "螺帽螺栓", "热缩管", "继电器", "电阻", "电容", "电子锁", "二极管", "PCBA", "其他特殊类"];
+                var conditionsO = ["油脂", "胶带类", "发泡材料", "防水泥"];
+                var sealedSampleValue = $("input[name='sealedSample']").val();// 获取其他输入框的值
+                if (conditionsT.includes(sealedSampleValue)){
+                    $("input[name='sampleIndate']").val(3);
+                }else if (conditionsF.includes(sealedSampleValue)||sealedSampleValue.includes("橡")){
+                    $("input[name='sampleIndate']").val(5);
+                }else if (conditionsO.includes(sealedSampleValue)||sealedSampleValue.includes("胶带")){
+                    $("input[name='sampleIndate']").val("N/A");
+                }
 
                 //比较图纸日期和封样件日期，封样件日期不能小于图纸日期，并且不能大于当前时间
                 var drawingTime = $("input[name='drawingTime']").val();
@@ -225,15 +255,19 @@
                 if (day<10){
                     day = '0'+day;
                 }
-                var sample_indate = $("select[name='sampleIndate']").val();//获取样件复检周期
-                var sample_insate_num = parseInt(sample_indate);//转化成int型
-                if (sealed_sample_time && sample_indate){//判断封样日期和样件复检周期是否有值
-                    var new_year = year_num + sample_insate_num;//年份加上周期
-                    var new_year_string = new_year.toString();
-                    var sealed_sample_due = `${new_year_string}-${month}-${day}`;// 使用模板字符串将年月日拼接成日期字符串
-                    // console.log(sealed_sample_due);
-                    $("input[name='sealedSampleDue']").val(sealed_sample_due);//更新到样件到期日期
-                    // console.log($("input[name='sealedSampleDue']").val());
+                // var sample_indate = $("select[name='sampleIndate']").val();//获取样件复检周期
+                var sample_indate = $("input[name='sampleIndate']").val();//获取样件复检周期
+                if (sealed_sample_time && sample_indate ){//判断封样日期和样件复检周期是否有值
+                    if (sample_indate != "N/A"){
+                        var sample_indate_num = parseInt(sample_indate);
+                        var new_year = year_num + sample_indate_num;//年份加上周期
+                        var new_year_string = new_year.toString();
+                        var sealed_sample_due = `${new_year_string}-${month}-${day}`;// 使用模板字符串将年月日拼接成日期字符串
+                        $("input[name='sealedSampleDue']").val(sealed_sample_due);//更新到样件到期日期
+                    }else if (sample_indate == "N/A"){
+                        $("input[name='sealedSampleDue']").val("");//更新到样件到期日期
+                    }
+
                 }
 
 
@@ -250,59 +284,38 @@
             })
 
             function updateCurrentTime() {
-                //现在时间距样件到期时间有多少天
-                var startDate = moment().format('YYYY-MM-DD');//获取当前时间
-                console.log('当前时间 ' + startDate);
-                var endDate = moment($("input[name='sealedSampleDue']").val());//获取样件到期时间
-                console.log('到期时间 ' + endDate);
-                // var endDate = $("input[name='sealedSampleDue']").val();//获取样件到期时间
-                // var endDateYear = new Date(endDate).getFullYear();
-                // var endDateMonth = new Date(endDate).getMonth() + 1;
-                // var endDateDay = new Date(endDate).getDate();
-                // var end_date = `${endDateYear}-${endDateMonth}-${endDateDay}`;
-                // var end_date = new Date(endDate);
-                // console.log('到期时间 ' + end_date);
-                // var end_date1 = moment(end_date).format('YYYY-MM-DD');
-                // console.log('到期时间 ' + end_date1);
-                // var time = Math.abs(end_date1.getTime() - startDate.getTime());
-                // var days = Math.ceil(time / (1000 * 3600 * 24));
-                // var days = end_date1.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
-                var days = endDate.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
-                console.log('现在到样件到期日期还有 ' + days + ' 天');
-                $("input[name='remainingTime']").val(days);//更新到距今还有多少天输入框
-                setTimeout(updateCurrentTime, 1000);// 每秒更新一次,通过这种方式，每次更新当前时间后，我们都会调用 setTimeout() 函数并递归调用自身，实现了实时监听当前时间的效果。而在第一次调用 setTimeout() 函数时，我们需要手动调用一次 updateCurrentTime() 函数，以触发递归调用的开始。
-                // requestAnimationFrame(updateCurrentTime); //由于渲染循环的默认间隔是每秒60帧，因此，updateCurrentTime() 函数的调用频率也会约为每秒60次。
+
+                if ($("input[name='sampleIndate']").val() == "N/A"){
+                    $("input[name='remainingTime']").val("N/A");
+                }else{
+                    //现在时间距样件到期时间有多少天
+                    var startDate = moment().format('YYYY-MM-DD');//获取当前时间
+                    console.log('当前时间 ' + startDate);
+                    var endDate = moment($("input[name='sealedSampleDue']").val());//获取样件到期时间
+                    console.log('到期时间 ' + endDate);
+                    // var endDate = $("input[name='sealedSampleDue']").val();//获取样件到期时间
+                    // var endDateYear = new Date(endDate).getFullYear();
+                    // var endDateMonth = new Date(endDate).getMonth() + 1;
+                    // var endDateDay = new Date(endDate).getDate();
+                    // var end_date = `${endDateYear}-${endDateMonth}-${endDateDay}`;
+                    // var end_date = new Date(endDate);
+                    // console.log('到期时间 ' + end_date);
+                    // var end_date1 = moment(end_date).format('YYYY-MM-DD');
+                    // console.log('到期时间 ' + end_date1);
+                    // var time = Math.abs(end_date1.getTime() - startDate.getTime());
+                    // var days = Math.ceil(time / (1000 * 3600 * 24));
+                    // var days = end_date1.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
+                    var days = endDate.diff(startDate, 'days');//使用 diff() 方法来计算指定日期和当前日期之间的天数差
+                    console.log('现在到样件到期日期还有 ' + days + ' 天');
+                    $("input[name='remainingTime']").val(days);//更新到距今还有多少天输入框
+                    setTimeout(updateCurrentTime, 1000);// 每秒更新一次,通过这种方式，每次更新当前时间后，我们都会调用 setTimeout() 函数并递归调用自身，实现了实时监听当前时间的效果。而在第一次调用 setTimeout() 函数时，我们需要手动调用一次 updateCurrentTime() 函数，以触发递归调用的开始。
+                    // requestAnimationFrame(updateCurrentTime); //由于渲染循环的默认间隔是每秒60帧，因此，updateCurrentTime() 函数的调用频率也会约为每秒60次。
+                }
+                updateCurrentTime();
+
             }
-
             // setInterval(updateCurrentTime, 1000); // 每秒更新一次,在上述代码中，我们定义了一个名为 updateCurrentTime() 的函数，用来获取当前时间并打印到控制台中。接着，使用 setInterval() 函数每秒调用一次 updateCurrentTime() 函数，实现实时更新当前时间的效果
-
             updateCurrentTime();
-            //根据封样日期和样件周期自动算出样件到期日期,通过改变样件周期触发样件到期时间
-            // $("select[name='sampleIndate']").change(function(){
-            //     console.log('4444');
-            //     var sealed_sample_time = $("input[name='sealedSampleTime']").val();//获取封样日期的时间
-            //     var year = new Date(sealed_sample_time).getFullYear();// 获取封样日期年份
-            //     var year_num = parseInt(year);//将字符串转化成int型
-            //     var month = new Date(sealed_sample_time).getMonth()+1;// 获取封样日期月份，需要加1
-            //     if (month<10){
-            //         month = '0'+month;
-            //     }
-            //     var day = new Date(sealed_sample_time).getDate();// 获取封样日期日期
-            //     if (day<10){
-            //         day = '0'+day;
-            //     }
-            //     var sample_indate = $("select[name='sampleIndate']").val();//获取样件复检周期
-            //     var sample_insate_num = parseInt(sample_indate);//转化成int型
-            //     if (sealed_sample_time && sample_indate){//判断封样日期和样件复检周期是否有值
-            //         var new_year = year_num + sample_insate_num;//年份加上周期
-            //         var new_year_string = new_year.toString();
-            //         var sealed_sample_due = `${new_year_string}-${month}-${day}`// 使用模板字符串将年月日拼接成日期字符串
-            //         $("input[name='sealedSampleDue']").val(sealed_sample_due);//更新到样件到期日期
-            //     }
-            // })
-
-
-
         });
 
         $(function() {

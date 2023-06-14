@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('不合格追踪记录模块列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>不合格品发生日期：</label>
+                                <input type="text" class="time-input" placeholder="请选择不合格品发生日期" name="issueDate"/>
+                            </li>
+                            <li>
+                                <label>零件号：</label>
+                                <input type="text" name="partNumber"/>
+                            </li>
+                            <li>
+                                <label>项目：</label>
+                                <input type="text" name="project"/>
+                            </li>
+                            <li>
+                                <label>零件名称：</label>
+                                <input type="text" name="partName"/>
+                            </li>
+                            <li>
+                                <label>供应商：</label>
+                                <input type="text" name="supplier"/>
+                            </li>
+                            <li>
+                                <label>不良问题描述：</label>
+                                <input type="text" name="defectDescription"/>
+                            </li>
+                            <li>
+                                <label>反馈区域：</label>
+                                <input type="text" name="feedbackArea"/>
+                            </li>
+                            <li>
+                                <label>是否重复：</label>
+                                <input type="text" name="isRepeat"/>
+                            </li>
+                            <li>
+                                <label>可疑品总数：</label>
+                                <input type="text" name="qualifiedQty"/>
+                            </li>
+                            <li>
+                                <label>不良数量：</label>
+                                <input type="text" name="defectQty"/>
+                            </li>
+                            <li>
+                                <label>存放位置：</label>
+                                <input type="text" name="storageLocation"/>
+                            </li>
+                            <li>
+                                <label>红牌号：</label>
+                                <input type="text" name="redCardNumber"/>
+                            </li>
+                            <li>
+                                <label>责任人：</label>
+                                <input type="text" name="responsiblePerson"/>
+                            </li>
+                            <li>
+                                <label>是否为供应商问题：</label>
+                                <input type="text" name="isSupplierIssue"/>
+                            </li>
+                            <li>
+                                <label>编号：</label>
+                                <input type="text" name="prrQmr"/>
+                            </li>
+                            <li>
+                                <label>状态：</label>
+                                <select name="status" th:with="type=${@dict.getType('sys_job_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="cs:tracking:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="cs:tracking:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cs:tracking:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cs:tracking:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('cs:tracking:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cs:tracking:remove')}]];
+        var isRepeatDatas = [[${@dict.getType('sys_yes_no')}]];
+        var isSupplierIssueDatas = [[${@dict.getType('sys_yes_no')}]];
+        var statusDatas = [[${@dict.getType('sys_common_status')}]];
+        var prefix = ctx + "cs/tracking";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "不合格追踪记录模块",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'issueId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'issueDate',
+                    title: '不合格品发生日期'
+                },
+                {
+                    field: 'partNumber',
+                    title: '零件号'
+                },
+                {
+                    field: 'project',
+                    title: '项目'
+                },
+                {
+                    field: 'partName',
+                    title: '零件名称'
+                },
+                {
+                    field: 'supplier',
+                    title: '供应商'
+                },
+                {
+                    field: 'defectDescription',
+                    title: '不良问题描述'
+                },
+                {
+                    field: 'feedbackArea',
+                    title: '反馈区域'
+                },
+                {
+                    field: 'isRepeat',
+                    title: '是否重复',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isRepeatDatas, value);
+                    }
+                },
+                {
+                    field: 'problemPicture',
+                    title: '问题照片'
+                },
+                {
+                    field: 'handlingMethods',
+                    title: '处理措施'
+                },
+                {
+                    field: 'qualifiedQty',
+                    title: '可疑品总数'
+                },
+                {
+                    field: 'defectQty',
+                    title: '不良数量'
+                },
+                {
+                    field: 'storageLocation',
+                    title: '存放位置'
+                },
+                {
+                    field: 'redCardNumber',
+                    title: '红牌号'
+                },
+                {
+                    field: 'responsiblePerson',
+                    title: '责任人'
+                },
+                {
+                    field: 'isSupplierIssue',
+                    title: '是否为供应商问题',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isSupplierIssueDatas, value);
+                    }
+                },
+                {
+                    field: 'prrQmr',
+                    title: '编号'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(statusDatas, value);
+                    }
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.issueId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.issueId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改FTQ废品统计模块')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-waste-edit" th:object="${ftqWaste}">
+            <input name="ftqId" th:field="*{ftqId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">周数：</label>
+                <div class="col-sm-8">
+                    <input name="weekNumber" th:field="*{weekNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">废品产生日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="wasteDate" th:value="${#dates.format(ftqWaste.wasteDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">零件号：</label>
+                <div class="col-sm-8">
+                    <input name="partNumber" th:field="*{partNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">废品产生数量：</label>
+                <div class="col-sm-8">
+                    <input name="wasteQuantity" th:field="*{wasteQuantity}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">零件名称：</label>
+                <div class="col-sm-8">
+                    <input name="partName" th:field="*{partName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">项目-区域：</label>
+                <div class="col-sm-8">
+                    <input name="projectArea" th:field="*{projectArea}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">废品产生原因：</label>
+                <div class="col-sm-8">
+                    <input name="wasteReason" th:field="*{wasteReason}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">缺陷描述：</label>
+                <div class="col-sm-8">
+                    <input name="defectDescription" th:field="*{defectDescription}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">班长：</label>
+                <div class="col-sm-8">
+                    <input name="shiftLeader" th:field="*{shiftLeader}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位成本：</label>
+                <div class="col-sm-8">
+                    <input name="unitCost" th:field="*{unitCost}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">总成本：</label>
+                <div class="col-sm-8">
+                    <input name="totalCost" th:field="*{totalCost}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remark" th:field="*{remark}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">创建时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="createdTime" th:value="${#dates.format(ftqWaste.createdTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">修改时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="updatedTime" th:value="${#dates.format(ftqWaste.updatedTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "cs/waste";
+        $("#form-waste-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-waste-edit').serialize());
+            }
+        }
+
+        $("input[name='wasteDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='createdTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='updatedTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

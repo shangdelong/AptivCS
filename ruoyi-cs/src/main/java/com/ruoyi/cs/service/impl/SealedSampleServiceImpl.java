@@ -49,7 +49,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     @Autowired
     private JavaMailSender mailSender; // JavaMailSender是Spring Boot默认提供的邮件发送工具类
 
-    @Scheduled(cron = "0 20 18 * * ?") // 每天早上8点检查
+    @Scheduled(cron = "0 0 8 * * ?") // 每天早上8点检查
 
     /**
      * 查询封样件的管理
@@ -209,8 +209,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
 
     @Override
     public void selectSealedSampleDueList(SealedSample sealedSample)
-    {
-        List<SealedSample> sealedSampleList = selectSealedSampleDueListA();
+    { List<SealedSample> sealedSampleList = selectSealedSampleDueListA();
           for(SealedSample sealedSample1:sealedSampleList){
               String email = sysUserMapper.selectUserEmailById(sealedSample1.getUserIid());
               // 发送邮件提醒

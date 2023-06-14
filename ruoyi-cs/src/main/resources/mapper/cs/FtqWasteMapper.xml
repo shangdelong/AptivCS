@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.cs.mapper.FtqWasteMapper">
+    
+    <resultMap type="FtqWaste" id="FtqWasteResult">
+        <result property="ftqId"    column="ftq_id"    />
+        <result property="weekNumber"    column="week_number"    />
+        <result property="wasteDate"    column="waste_date"    />
+        <result property="partNumber"    column="part_number"    />
+        <result property="wasteQuantity"    column="waste_quantity"    />
+        <result property="partName"    column="part_name"    />
+        <result property="projectArea"    column="project_area"    />
+        <result property="wasteReason"    column="waste_reason"    />
+        <result property="defectDescription"    column="defect_description"    />
+        <result property="shiftLeader"    column="shift_leader"    />
+        <result property="unitCost"    column="unit_cost"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="remark"    column="remark"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectFtqWasteVo">
+        select ftq_id, week_number, waste_date, part_number, waste_quantity, part_name, project_area, waste_reason, defect_description, shift_leader, unit_cost, total_cost, remark, created_time, updated_time from ftq_waste
+    </sql>
+
+    <select id="selectFtqWasteList" parameterType="FtqWaste" resultMap="FtqWasteResult">
+        <include refid="selectFtqWasteVo"/>
+        <where>  
+            <if test="weekNumber != null  and weekNumber != ''"> and week_number like concat('%', #{weekNumber}, '%')</if>
+            <if test="wasteDate != null "> and waste_date = #{wasteDate}</if>
+            <if test="partNumber != null  and partNumber != ''"> and part_number = #{partNumber}</if>
+            <if test="wasteQuantity != null "> and waste_quantity = #{wasteQuantity}</if>
+            <if test="partName != null  and partName != ''"> and part_name like concat('%', #{partName}, '%')</if>
+            <if test="projectArea != null  and projectArea != ''"> and project_area like concat('%', #{projectArea}, '%')</if>
+            <if test="wasteReason != null  and wasteReason != ''"> and waste_reason like concat('%', #{wasteReason}, '%')</if>
+            <if test="defectDescription != null  and defectDescription != ''"> and defect_description like concat('%', #{defectDescription}, '%')</if>
+            <if test="shiftLeader != null  and shiftLeader != ''"> and shift_leader like concat('%', #{shiftLeader}, '%')</if>
+            <if test="unitCost != null "> and unit_cost = #{unitCost}</if>
+            <if test="totalCost != null "> and total_cost = #{totalCost}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFtqWasteByFtqId" parameterType="Long" resultMap="FtqWasteResult">
+        <include refid="selectFtqWasteVo"/>
+        where ftq_id = #{ftqId}
+    </select>
+        
+    <insert id="insertFtqWaste" parameterType="FtqWaste" useGeneratedKeys="true" keyProperty="ftqId">
+        insert into ftq_waste
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="weekNumber != null">week_number,</if>
+            <if test="wasteDate != null">waste_date,</if>
+            <if test="partNumber != null">part_number,</if>
+            <if test="wasteQuantity != null">waste_quantity,</if>
+            <if test="partName != null">part_name,</if>
+            <if test="projectArea != null">project_area,</if>
+            <if test="wasteReason != null">waste_reason,</if>
+            <if test="defectDescription != null">defect_description,</if>
+            <if test="shiftLeader != null">shift_leader,</if>
+            <if test="unitCost != null">unit_cost,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="weekNumber != null">#{weekNumber},</if>
+            <if test="wasteDate != null">#{wasteDate},</if>
+            <if test="partNumber != null">#{partNumber},</if>
+            <if test="wasteQuantity != null">#{wasteQuantity},</if>
+            <if test="partName != null">#{partName},</if>
+            <if test="projectArea != null">#{projectArea},</if>
+            <if test="wasteReason != null">#{wasteReason},</if>
+            <if test="defectDescription != null">#{defectDescription},</if>
+            <if test="shiftLeader != null">#{shiftLeader},</if>
+            <if test="unitCost != null">#{unitCost},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFtqWaste" parameterType="FtqWaste">
+        update ftq_waste
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="weekNumber != null">week_number = #{weekNumber},</if>
+            <if test="wasteDate != null">waste_date = #{wasteDate},</if>
+            <if test="partNumber != null">part_number = #{partNumber},</if>
+            <if test="wasteQuantity != null">waste_quantity = #{wasteQuantity},</if>
+            <if test="partName != null">part_name = #{partName},</if>
+            <if test="projectArea != null">project_area = #{projectArea},</if>
+            <if test="wasteReason != null">waste_reason = #{wasteReason},</if>
+            <if test="defectDescription != null">defect_description = #{defectDescription},</if>
+            <if test="shiftLeader != null">shift_leader = #{shiftLeader},</if>
+            <if test="unitCost != null">unit_cost = #{unitCost},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where ftq_id = #{ftqId}
+    </update>
+
+    <delete id="deleteFtqWasteByFtqId" parameterType="Long">
+        delete from ftq_waste where ftq_id = #{ftqId}
+    </delete>
+
+    <delete id="deleteFtqWasteByFtqIds" parameterType="String">
+        delete from ftq_waste where ftq_id in 
+        <foreach item="ftqId" collection="array" open="(" separator="," close=")">
+            #{ftqId}
+        </foreach>
+    </delete>
+
+</mapper>
