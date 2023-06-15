@@ -26,7 +26,7 @@ import com.ruoyi.common.utils.DateUtils;
 import javax.validation.Validator;
 
 /**
- * 封样件的管理Service业务层处理
+ * 封样件数据Service业务层处理
  * 
  * @author shangshang
  * @date 2023-05-23
@@ -52,10 +52,10 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     @Scheduled(cron = "0 0 8 * * ?") // 每天早上8点检查
 
     /**
-     * 查询封样件的管理
+     * 查询封样件数据
      * 
-     * @param id 封样件的管理主键
-     * @return 封样件的管理
+     * @param id 封样件数据主键
+     * @return 封样件数据
      */
     @Override
     public SealedSample selectSealedSampleById(Long id)
@@ -74,10 +74,10 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
     /**
-     * 查询封样件的管理列表
+     * 查询封样件数据列表
      * 
-     * @param sealedSample 封样件的管理
-     * @return 封样件的管理
+     * @param sealedSample 封样件数据
+     * @return 封样件数据
      */
     @Override
     public List<SealedSample> selectSealedSampleList(SealedSample sealedSample)
@@ -88,7 +88,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     /**
      * 新增封样件
      * 
-     * @param sealedSample 封样件的管理
+     * @param sealedSample 封样件数据
      * @return 结果
      */
     @Override
@@ -101,7 +101,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     /**
      * 修改封样件
      * 
-     * @param sealedSample 封样件的管理
+     * @param sealedSample 封样件数据
      * @return 结果
      */
     @Override
@@ -112,9 +112,9 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
     /**
-     * 批量删除封样件的管理
+     * 批量删除封样件数据
      * 
-     * @param ids 需要删除的封样件的管理主键
+     * @param ids 需要删除的封样件数据主键
      * @return 结果
      */
     @Override
@@ -124,9 +124,9 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
     /**
-     * 删除封样件的管理信息
+     * 删除封样件数据信息
      * 
-     * @param id 封样件的管理主键
+     * @param id 封样件数据主键
      * @return 结果
      */
     @Override
@@ -136,8 +136,15 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
 
+    /**
+     * 导入封样数据
+     * @param sampleList 封样数据列表
+     * @param updateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return
+     */
     @Override
-    public String importSample(List<SealedSample> sampleList, boolean isUpdateSupport, String operName) {
+    public String importSample(List<SealedSample> sampleList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(sampleList) || sampleList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -167,7 +174,7 @@ public class SealedSampleServiceImpl implements ISealedSampleService
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、物料名称 " + sample.getSealedSample() + " 导入成功");
                 }
-                else if (isUpdateSupport)
+                else if (updateSupport)
                 {
                     BeanValidators.validateWithException(validator, sample);
 //                    checkUserAllowed(u);

@@ -9,7 +9,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 封样件的管理对象 sealed_sample
+ * 封样件数据对象 sealed_sample
  * 
  * @author shangshang
  * @date 2023-05-23
@@ -66,7 +66,7 @@ public class SealedSample extends BaseEntity
 
     /** 到今日还有（）天 */
     @Excel(name = "到今日还有（）天", readConverterExp = "到今日还有（）天",type = Excel.Type.EXPORT)
-    private String remainingTime;
+    private Long remainingTime;
 
     /** 实际复检日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -90,7 +90,6 @@ public class SealedSample extends BaseEntity
     private Date updateTime;
 
     /** sys_user表的外键 */
-    @Excel(name = "sys_user表的外键")
     private Long userIid;
 
 
@@ -216,12 +215,12 @@ public class SealedSample extends BaseEntity
     {
         return sealedSampleDue;
     }
-    public void setRemainingTime(String remainingTime)
+    public void setRemainingTime(Long remainingTime)
     {
         this.remainingTime = remainingTime;
     }
 
-    public String getRemainingTime()
+    public Long getRemainingTime()
     {
         return remainingTime;
     }

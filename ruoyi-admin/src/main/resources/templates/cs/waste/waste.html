@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('FTQ废品统计模块列表')" />
+    <th:block th:include="include :: header('FTQ废品统计数据列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -12,56 +12,56 @@
                         <ul>
                             <li>
                                 <label>周数：</label>
-                                <input type="text" name="weekNumber"/>
+                                <input type="text" name="weekNumber" autocomplete="off"/>
                             </li>
-                            <li>
-                                <label>废品产生日期：</label>
-                                <input type="text" class="time-input" placeholder="请选择废品产生日期" name="wasteDate"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>废品产生日期：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择废品产生日期" name="wasteDate"/>-->
+<!--                            </li>-->
                             <li>
                                 <label>零件号：</label>
-                                <input type="text" name="partNumber"/>
+                                <input type="text" name="partNumber" autocomplete="off"/>
                             </li>
-                            <li>
-                                <label>废品产生数量：</label>
-                                <input type="text" name="wasteQuantity"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>废品产生数量：</label>-->
+<!--                                <input type="text" name="wasteQuantity"/>-->
+<!--                            </li>-->
                             <li>
                                 <label>零件名称：</label>
-                                <input type="text" name="partName"/>
+                                <input type="text" name="partName" autocomplete="off"/>
                             </li>
                             <li>
                                 <label>项目-区域：</label>
-                                <input type="text" name="projectArea"/>
+                                <input type="text" name="projectArea" autocomplete="off"/>
                             </li>
-                            <li>
-                                <label>废品产生原因：</label>
-                                <input type="text" name="wasteReason"/>
-                            </li>
-                            <li>
-                                <label>缺陷描述：</label>
-                                <input type="text" name="defectDescription"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>废品产生原因：</label>-->
+<!--                                <input type="text" name="wasteReason"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>缺陷描述：</label>-->
+<!--                                <input type="text" name="defectDescription"/>-->
+<!--                            </li>-->
                             <li>
                                 <label>班长：</label>
-                                <input type="text" name="shiftLeader"/>
+                                <input type="text" name="shiftLeader" autocomplete="off"/>
                             </li>
-                            <li>
-                                <label>单位成本：</label>
-                                <input type="text" name="unitCost"/>
-                            </li>
-                            <li>
-                                <label>总成本：</label>
-                                <input type="text" name="totalCost"/>
-                            </li>
-                            <li>
-                                <label>创建时间：</label>
-                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createdTime"/>
-                            </li>
-                            <li>
-                                <label>修改时间：</label>
-                                <input type="text" class="time-input" placeholder="请选择修改时间" name="updatedTime"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>单位成本：</label>-->
+<!--                                <input type="text" name="unitCost"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>总成本：</label>-->
+<!--                                <input type="text" name="totalCost"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>创建时间：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择创建时间" name="createdTime"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>修改时间：</label>-->
+<!--                                <input type="text" class="time-input" placeholder="请选择修改时间" name="updatedTime"/>-->
+<!--                            </li>-->
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -81,8 +81,11 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cs:waste:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="cs:waste:import">
+                    <i class="fa fa-download"></i> 导入
+                </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cs:waste:export">
-                    <i class="fa fa-download"></i> 导出
+                    <i class="fa fa-upload"></i> 导出
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
@@ -103,7 +106,11 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "FTQ废品统计模块",
+                importUrl: prefix + "/importData",
+                importTemplateUrl: prefix + "/importTemplate",
+                sortName: "createdTime",
+                sortOrder: "desc",
+                modalName: "FTQ废品统计数据",
                 columns: [{
                     checkbox: true
                 },
@@ -113,58 +120,72 @@
                     visible: false
                 },
                 {
+                    align: "center",
                     field: 'weekNumber',
                     title: '周数'
                 },
                 {
+                    align: "center",
                     field: 'wasteDate',
                     title: '废品产生日期'
                 },
                 {
+                    align: "center",
                     field: 'partNumber',
                     title: '零件号'
                 },
                 {
+                    align: "center",
                     field: 'wasteQuantity',
                     title: '废品产生数量'
                 },
                 {
+                    align: "center",
                     field: 'partName',
                     title: '零件名称'
                 },
                 {
+                    align: "center",
                     field: 'projectArea',
                     title: '项目-区域'
                 },
                 {
+                    align: "center",
                     field: 'wasteReason',
                     title: '废品产生原因'
                 },
                 {
+                    align: "center",
                     field: 'defectDescription',
                     title: '缺陷描述'
                 },
                 {
+                    align: "center",
                     field: 'shiftLeader',
                     title: '班长'
                 },
                 {
+                    align: "center",
                     field: 'unitCost',
                     title: '单位成本'
                 },
                 {
+                    align: "center",
                     field: 'totalCost',
                     title: '总成本'
                 },
                 {
+                    align: "center",
                     field: 'remark',
                     title: '备注'
                 },
                 {
+                    align: "center",
                     field: 'createdTime',
                     title: '创建时间'
                 },
                 {
+                    align: "center",
                     field: 'updatedTime',
                     title: '修改时间'
                 },
@@ -183,4 +204,19 @@
         });
     </script>
 </body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果样件信息已经存在，更新这条数据。"> 是否更新已经存在的样件信息
+                &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
 </html>

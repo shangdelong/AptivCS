@@ -29,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 封样件的管理Controller
+ * 封样件数据Controller
  * 
  * @author shangshang
  * @date 2023-05-23
@@ -52,7 +52,7 @@ public class SealedSampleController extends BaseController
     }
 
     /**
-     * 查询封样件的管理列表
+     * 查询封样件数据列表
      */
     @RequiresPermissions("cs:sample:list")
     @PostMapping("/list")
@@ -81,20 +81,27 @@ public class SealedSampleController extends BaseController
 
 
     /**
-     * 导出封样件的管理列表
+     * 导出封样件数据列表
      */
     @RequiresPermissions("cs:sample:export")
-    @Log(title = "封样件的管理", businessType = BusinessType.EXPORT)
+    @Log(title = "封样件数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SealedSample sealedSample)
     {
         List<SealedSample> list = sealedSampleService.selectSealedSampleList(sealedSample);
         ExcelUtil<SealedSample> util = new ExcelUtil<SealedSample>(SealedSample.class);
-        return util.exportExcel(list, "封样件的管理数据");
+        return util.exportExcel(list, "封样件数据");
     }
 
-    @Log(title = "封样件的管理", businessType = BusinessType.IMPORT)
+    /**
+     * 导入封样件数据
+     * @param file
+     * @param updateSupport
+     * @return
+     * @throws Exception
+     */
+    @Log(title = "封样件数据", businessType = BusinessType.IMPORT)
     @RequiresPermissions("cs:sample:import")
     @PostMapping("/importData")
     @ResponseBody
@@ -106,22 +113,18 @@ public class SealedSampleController extends BaseController
         return AjaxResult.success(message);
     }
 
-//    private String getEightD() {
-//        return getEightD();
-//    }
-
 
     @RequiresPermissions("cs:sample:view")
     @GetMapping("/importTemplate")
     @ResponseBody
     public AjaxResult importTemplate()
     {
-        ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.importTemplateExcel("用户数据");
+        ExcelUtil<SealedSample> util = new ExcelUtil<SealedSample>(SealedSample.class);
+        return util.importTemplateExcel("_封样件数据模板");
     }
 
     /**
-     * 新增封样件的管理
+     * 新增封样件数据
      */
     @GetMapping("/add")
     public String add()
@@ -130,10 +133,10 @@ public class SealedSampleController extends BaseController
     }
 
     /**
-     * 新增保存封样件的管理
+     * 新增保存封样件数据
      */
     @RequiresPermissions("cs:sample:add")
-    @Log(title = "封样件的管理", businessType = BusinessType.INSERT)
+    @Log(title = "封样件数据", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(SealedSample sealedSample)
@@ -142,7 +145,7 @@ public class SealedSampleController extends BaseController
     }
 
     /**
-     * 修改封样件的管理
+     * 修改封样件数据
      */
     @RequiresPermissions("cs:sample:edit")
     @GetMapping("/edit/{id}")
@@ -154,10 +157,10 @@ public class SealedSampleController extends BaseController
     }
 
     /**
-     * 修改保存封样件的管理
+     * 修改保存封样件数据
      */
     @RequiresPermissions("cs:sample:edit")
-    @Log(title = "封样件的管理", businessType = BusinessType.UPDATE)
+    @Log(title = "封样件数据", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(SealedSample sealedSample)
@@ -167,10 +170,10 @@ public class SealedSampleController extends BaseController
     }
 
     /**
-     * 删除封样件的管理
+     * 删除封样件数据
      */
     @RequiresPermissions("cs:sample:remove")
-    @Log(title = "封样件的管理", businessType = BusinessType.DELETE)
+    @Log(title = "封样件数据", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)

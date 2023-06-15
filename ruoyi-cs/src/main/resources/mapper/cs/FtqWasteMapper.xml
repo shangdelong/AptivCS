@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFtqWasteList" parameterType="FtqWaste" resultMap="FtqWasteResult">
         <include refid="selectFtqWasteVo"/>
         <where>  
-            <if test="weekNumber != null  and weekNumber != ''"> and week_number like concat('%', #{weekNumber}, '%')</if>
+            <if test="weekNumber != null  and weekNumber != ''"> and week_number = #{weekNumber}</if>
             <if test="wasteDate != null "> and waste_date = #{wasteDate}</if>
             <if test="partNumber != null  and partNumber != ''"> and part_number = #{partNumber}</if>
             <if test="wasteQuantity != null "> and waste_quantity = #{wasteQuantity}</if>

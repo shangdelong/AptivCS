@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改封样件的管理')" />
+    <th:block th:include="include :: header('修改封样件数据')" />
     <th:block th:include="include :: datetimepicker-css" />
     <th:block th:include="include :: bootstrap-fileinput-css"/>
 </head>
@@ -261,7 +261,7 @@
                 function updateCurrentTime() {
 
                     if ($("input[name='sampleIndate']").val() == "N/A"){
-                        $("input[name='remainingTime']").val("N/A");
+                        $("input[name='remainingTime']").val(null);
                     }else{
                         //现在时间距样件到期时间有多少天
                         var startDate = moment().format('YYYY-MM-DD');//获取当前时间

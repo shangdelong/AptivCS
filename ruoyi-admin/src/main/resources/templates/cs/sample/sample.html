@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('封样件的管理列表')" />
+    <th:block th:include="include :: header('封样件数据列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -21,7 +21,7 @@
 <!--                            </li>-->
                             <li>
                                 <label>样件位置：</label>
-                                <input type="text" name="sampleLocation" autocomplete="off"/>
+                                <input type="text" name="sampleLocation" autocomplete="off" placeholder="例：A1-1-1"/>
                             </li>
                             <li>
                                 <label>供应商：</label>
@@ -59,10 +59,10 @@
                                 <span>-</span>
                                 <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSealedSampleDue]" autocomplete="off"/>
                             </li>
-<!--                            <li>-->
-<!--                                <label>到今日还有：</label>-->
-<!--                                <input type="text" name="remainingTime"/>-->
-<!--                            </li>-->
+                            <li>
+                                <label>到今日还有（天）：</label>
+                                <input type="text" name="remainingTime" autocomplete="off" placeholder="  <= "/>
+                            </li>
 <!--                            <li>-->
 <!--                                <label>实际复检日期：</label>-->
 <!--                                <input type="text" class="time-input" placeholder="请选择实际复检日期" name="recheckTime"/>-->
@@ -137,7 +137,7 @@
                 importTemplateUrl: prefix + "/importTemplate",
                 sortName: "createTime",
                 sortOrder: "desc",
-                modalName: "封样件的管理",
+                modalName: "封样件数据",
 
                 columns: [{
                     // rememberSelected: true,
@@ -219,7 +219,7 @@
                             color = 'red';
                         }else if(value > 0 && value <=30){
                             color = 'yellow';
-                        }else{
+                        }else {
                             color = 'white';
                         }
                         // return '<div class="badge badge-primary" style="background-color:' + color + '">' + value + '</div>';

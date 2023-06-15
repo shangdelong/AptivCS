@@ -9,7 +9,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * FTQ废品统计模块对象 ftq_waste
+ * FTQ废品统计对象 ftq_waste
  * 
  * @author shangshang
  * @date 2023-06-14
@@ -67,13 +67,15 @@ public class FtqWaste extends BaseEntity
     private BigDecimal totalCost;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "创建时间",type = Excel.Type.EXPORT)
     private Date createdTime;
 
     /** 修改时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "修改时间",type = Excel.Type.EXPORT)
     private Date updatedTime;
 
     public void setFtqId(Long ftqId) 
