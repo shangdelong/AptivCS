@@ -66,6 +66,23 @@ public interface SealedSampleMapper
      */
     public int deleteSealedSampleByIds(String[] ids);
 
-
+    /**
+     * 获取快过期样件列表
+     * @return
+     */
     List<SealedSample> selectSealedSampleDueList();
+
+    /**
+     * 校验零件号是否唯一
+     * @param eightD 零件号
+     * @return
+     */
+    public SealedSample checkEightDUnique(String eightD);
+
+    /**
+     * 校验零件位置是否唯一
+     * @param sampleLocation 零件位置
+     * @return
+     */
+    public SealedSample checkSampleLocationUnique(String sampleLocation);
 }

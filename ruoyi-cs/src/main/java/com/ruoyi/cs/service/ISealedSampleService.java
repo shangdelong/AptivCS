@@ -70,10 +70,24 @@ public interface ISealedSampleService
     String importSample(List<SealedSample> sampleList, boolean updateSupport, String operName);
 
     /**
-     * 样件到列表
+     * 发邮件获取快过期样件的接口
      * @param sealedSample
      * @return
      */
     void selectSealedSampleDueList(SealedSample sealedSample);
+
+    /**
+     * 校验零件号是否唯一
+     * @param sealedSample 零件
+     * @return
+     */
+    public boolean checkEightDUnique(SealedSample sealedSample);
+
+    /**
+     * 校验零件位置是否唯一
+     * @param sealedSample 零件
+     * @return
+     */
+    public boolean checkSampleLocationUnique(SealedSample sealedSample);
 
 }

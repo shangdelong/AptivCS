@@ -7,6 +7,7 @@ import java.util.Map;
 import com.alibaba.druid.sql.ast.expr.SQLCaseExpr;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.MimeTypeUtils;
 import com.ruoyi.web.controller.system.SysProfileController;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
@@ -64,20 +66,6 @@ public class SealedSampleController extends BaseController
 //        sealedSample.addAttribute("list", list);//增加
         return getDataTable(list);
     }
-
-    /**
-     * 查询到期封样件的列表
-     */
-//    @RequiresPermissions("cs:sample:list")
-//    @PostMapping("/list")
-//    @ResponseBody
-//    public TableDataInfo dueList(SealedSample sealedSample)
-//    {
-//        startPage();
-//        List<SealedSample> list = sealedSampleService.selectSealedSampleDueList(sealedSample);
-////        sealedSample.addAttribute("list", list);//增加
-//        return getDataTable(list);
-//    }
 
 
     /**
@@ -139,8 +127,16 @@ public class SealedSampleController extends BaseController
     @Log(title = "封样件数据", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(SealedSample sealedSample)
+    public AjaxResult addSave(@Validated SealedSample sealedSample)
     {
+        if (!sealedSampleService.checkEightDUnique(sealedSample))
+        {
+            return error("新增样件失败，'" + sealedSample.getEightD() + "'零件号已存在");
+        }
+        else if (!sealedSampleService.checkSampleLocationUnique(sealedSample))
+        {
+            return error("新增样件失败，'" + sealedSample.getSampleLocation() + "'位置已经被占用");
+        }
         return toAjax(sealedSampleService.insertSealedSample(sealedSample));
     }
 
@@ -163,9 +159,17 @@ public class SealedSampleController extends BaseController
     @Log(title = "封样件数据", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(SealedSample sealedSample)
+    public AjaxResult editSave(@Validated SealedSample sealedSample)
     {
 
+        if (!sealedSampleService.checkEightDUnique(sealedSample))
+        {
+            return error("修改样件失败，'" + sealedSample.getEightD() + "'零件号已存在");
+        }
+        else if (!sealedSampleService.checkSampleLocationUnique(sealedSample))
+        {
+            return error("修改样件失败，'" + sealedSample.getSampleLocation() + "'位置已经被占用");
+        }
         return toAjax(sealedSampleService.updateSealedSample(sealedSample));
     }
 
@@ -203,5 +207,25 @@ public class SealedSampleController extends BaseController
 //        sealedSample.addAttribute("itemList", itemList);
 //        return "show_items";
 //    }
+
+    /**
+     * 校验零件号
+     */
+    @PostMapping("/checkEightDUnique")
+    @ResponseBody
+    public boolean checkEightDUnique(SealedSample sealedSample)
+    {
+        return sealedSampleService.checkEightDUnique(sealedSample);
+    }
+
+    /**
+     * 校验位置号
+     */
+    @PostMapping("/checkSampleLocationUnique")
+    @ResponseBody
+    public boolean checkSampleLocationUnique(SealedSample sealedSample)
+    {
+        return sealedSampleService.checkSampleLocationUnique(sealedSample);
+    }
 
 }

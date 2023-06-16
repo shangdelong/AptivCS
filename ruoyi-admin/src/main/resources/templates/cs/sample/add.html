@@ -17,7 +17,7 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">零件号：</label>
                 <div class="col-sm-8">
-                    <input name="eightD" class="form-control" type="text" required autocomplete="off" placeholder="例:A1234567、12345678">
+                    <input name="eightD" class="form-control" type="text" required autocomplete="off" placeholder="例:A1234567、12345678" >
 <!--                    <input name="eightD" class="form-control" type="text" required autocomplete="off" data-rule="^[a-zA-Z\d]{8}+$" data-msg="请按照规则输入！" placeholder="例：A1234567">-->
                 </div>
             </div>
@@ -44,6 +44,7 @@
                 <label class="col-sm-3 control-label">业务：</label>
                 <div class="col-sm-8">
                     <select name="business" class="form-control">
+                        <option value="">请选择业务</option>
                         <option value="奔驰">奔驰</option>
                         <option value="大众">大众</option>
                         <option value="现代">现代</option>
@@ -133,6 +134,41 @@
         var croppable = false;
         var prefix = ctx + "cs/sample"
         $("#form-sample-add").validate({
+            onkeyup: false,
+            rules:{
+                eightD:{
+                    remote: {
+                        url: prefix + "/checkEightDUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "eightD": function() {
+                                return $.common.trim($("input[name='eightD']").val());
+                            }
+                        }
+                    }
+                },
+                sampleLocation:{
+                    remote: {
+                        url: prefix + "/checkSampleLocationUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "sampleLocation": function() {
+                                return $.common.trim($("input[name='sampleLocation']").val());
+                            }
+                        }
+                    }
+                },
+            },
+            messages: {
+                "eightD": {
+                    remote: "零件号已经存在！"
+                },
+                "sampleLocation": {
+                    remote: "位置已经被零件占用！"
+                }
+            },
             focusCleanup: true
         });
 
@@ -164,7 +200,7 @@
 
         //零件号输入框的校验
         $("input[name='eightD']").blur(function () {
-            var pattern = /^[a-zA-Z\d]{8}/;
+            var pattern = /^[a-zA-Z\d]{8}$/;
             var input_val = $(this).val();
             if(input_val !== "" && pattern.test(input_val)){
                 // 符合规则，不做任何操作

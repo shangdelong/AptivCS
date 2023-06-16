@@ -44,19 +44,29 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label">项目-区域：</label>
                 <div class="col-sm-8">
-                    <input name="projectArea" th:field="*{projectArea}" class="form-control" type="text" autocomplete="off">
+<!--                    <input name="projectArea" th:field="*{projectArea}" class="form-control" type="text" autocomplete="off">-->
+                    <select name="projectArea" th:field="*{projectArea}" class="form-control" type="text" autocomplete="off">
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">废品产生原因：</label>
                 <div class="col-sm-8">
-                    <input name="wasteReason" th:field="*{wasteReason}" class="form-control" type="text" autocomplete="off">
+                    <select name="wasteReason" th:field="*{wasteReason}" class="form-control" type="text" autocomplete="off">
+                        <option value="Ⅰ">Ⅰ</option>
+                        <option value="Ⅱ">Ⅱ</option>
+                    </select>
+<!--                    <input name="wasteReason" th:field="*{wasteReason}" class="form-control" type="text" autocomplete="off">-->
                 </div>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">缺陷描述：</label>
                 <div class="col-sm-8">
-                    <input name="defectDescription" th:field="*{defectDescription}" class="form-control" type="text" autocomplete="off">
+                    <input name="defectDescription" th:field="*{defectDescription}" class="form-control" type="text" autocomplete="off" readonly>
                 </div>
             </div>
             <div class="form-group">    
@@ -121,6 +131,32 @@
             format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true
+        });
+
+        //零件号输入框的校验
+        $("input[name='partNumber']").blur(function () {
+            var pattern = /^[a-zA-Z0-9]{8}$/;
+            var input_val = $(this).val();
+            if(input_val !== "" && pattern.test(input_val)){
+                // 符合规则，不做任何操作
+            } else {
+                // 不符合规则，清空输入框并给出提示信息
+
+                alert("输入不符合规则！");
+                $(this).val("");
+
+            }
+        });
+
+        //根据产生的级别自动显示出对应的缺陷描述
+        $("select[name='wasteReason']").change(function () {
+            //根据产生的级别自动显示出对应的缺陷描述
+            var wasteReason = $("select[name='wasteReason']").val();
+            if (wasteReason == "Ⅰ"){
+                $("input[name='defectDescription']").val("来料损坏");
+            }else if (wasteReason == "Ⅱ"){
+                $("input[name='defectDescription']").val("生产损坏");
+            }
         });
 
         $("input[name='createdTime']").datetimepicker({

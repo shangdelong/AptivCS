@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
@@ -213,7 +214,10 @@ public class SealedSampleServiceImpl implements ISealedSampleService
     }
 
 
-
+    /**
+     * 到期自动发送邮件
+     * @param sealedSample
+     */
     @Override
     public void selectSealedSampleDueList(SealedSample sealedSample)
     { List<SealedSample> sealedSampleList = selectSealedSampleDueListA();
@@ -244,8 +248,43 @@ public class SealedSampleServiceImpl implements ISealedSampleService
 //        }
     }
 
+
+
     public List<SealedSample> selectSealedSampleDueListA(){
         return sealedSampleMapper.selectSealedSampleDueList();
+    }
+
+
+    /**
+     * 校验零件号是否存在
+     * @param sealedSample 零件
+     * @return
+     */
+    @Override
+    public boolean checkEightDUnique(SealedSample sealedSample) {
+        Long id = StringUtils.isNull(sealedSample.getId()) ? -1L : sealedSample.getId();
+        SealedSample info = sealedSampleMapper.checkEightDUnique(sealedSample.getEightD());
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != id.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
+    /**
+     * 校验零件存放位置是否被占用
+     * @param sealedSample 零件
+     * @return
+     */
+    @Override
+    public boolean checkSampleLocationUnique(SealedSample sealedSample) {
+        Long id = StringUtils.isNull(sealedSample.getId()) ? -1L : sealedSample.getId();
+        SealedSample info = sealedSampleMapper.checkSampleLocationUnique(sealedSample.getSampleLocation());
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != id.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 
 

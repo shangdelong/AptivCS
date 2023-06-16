@@ -130,6 +130,41 @@
     <script th:inline="javascript" >
         var prefix = ctx + "cs/sample";
         $("#form-sample-edit").validate({
+            onkeyup: false,
+            rules:{
+                eightD:{
+                    remote: {
+                        url: prefix + "/checkEightDUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "eightD": function() {
+                                return $.common.trim($("input[name='eightD']").val());
+                            }
+                        }
+                    }
+                },
+                sampleLocation:{
+                    remote: {
+                        url: prefix + "/checkSampleLocationUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "sampleLocation": function() {
+                                return $.common.trim($("input[name='sampleLocation']").val());
+                            }
+                        }
+                    }
+                },
+            },
+            messages: {
+                "eightD": {
+                    remote: "零件号已经存在！"
+                },
+                "sampleLocation": {
+                    remote: "位置已经被零件占用！"
+                }
+            },
             focusCleanup: true
         });
 
